@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Research Lab — Nanoscale Organization of Receptor Signaling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--navy:#0a1628;--blue:#1a3a6e;--mid:#2d5fa6;--accent:#3b82f6;--light:#dbeafe;--pale:#f0f6ff;--white:#ffffff;--ink:#1a1a2e;--muted:#5a6a88;--rule:#d0ddf5;--serif:'Playfair Display',Georgia,serif;--body:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',monospace;--max:1180px;--nav-h:68px;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--body);color:var(--ink);background:var(--white);line-height:1.7;overflow-x:hidden;}
+    img{max-width:100%;display:block;}
+    h1,h2,h3,h4{font-family:var(--serif);line-height:1.2;}
+    a{color:var(--mid);}
+    .container{max-width:var(--max);margin:0 auto;padding:0 2rem;}
+    #nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);z-index:999;transition:box-shadow 0.3s;}
+    #nav.scrolled{box-shadow:0 4px 24px rgba(10,22,40,0.08);}
+    .nav-inner{max-width:var(--max);margin:0 auto;padding:0 1.5rem;height:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+    .nav-logo-placeholder{height:42px;width:100px;background:var(--pale);border:1.5px dashed var(--rule);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.6rem;color:var(--muted);}
+    .nav-divider-v{width:1px;height:32px;background:var(--rule);flex-shrink:0;}
+    .nav-brand{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--navy);text-decoration:none;white-space:nowrap;}
+    .nav-brand span{color:var(--mid);}
+    .nav-links{display:flex;gap:0.15rem;list-style:none;align-items:center;}
+    .nav-links a{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--muted);text-decoration:none;text-transform:uppercase;padding:0.32rem 0.5rem;border-radius:4px;transition:all 0.2s;white-space:nowrap;}
+    .nav-links a:hover,.nav-links a.active{color:var(--mid);background:var(--pale);}
+    .nav-links .nav-ext a{background:var(--mid);color:var(--white);border-radius:4px;}
+    .nav-links .nav-ext a:hover{background:var(--navy);color:var(--white);}
+    .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+    .nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;}
+    .theme-hero{padding-top:calc(var(--nav-h) + 64px);padding-bottom:56px;background:var(--navy);position:relative;overflow:hidden;}
+    .theme-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.07) 1px,transparent 1px);background-size:48px 48px;}
+    .theme-hero::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.16) 0%,transparent 70%);top:-80px;right:-80px;pointer-events:none;}
+    .hero-inner{position:relative;z-index:1;}
+    .breadcrumb{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(219,234,254,0.45);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+    .breadcrumb a{color:rgba(219,234,254,0.6);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--light);}
+    .theme-hero h1{font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;color:var(--white);letter-spacing:-0.02em;margin-bottom:0.75rem;}
+    .theme-hero h1 em{font-style:italic;color:var(--light);}
+    .hero-summary{font-size:1.08rem;color:rgba(219,234,254,0.78);max-width:640px;font-weight:300;line-height:1.75;}
+    .theme-body{padding:64px 0 88px;}
+    .theme-layout{display:grid;grid-template-columns:1fr 360px;gap:4.5rem;align-items:start;}
+    .back-link{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);text-decoration:none;margin-bottom:2.5rem;transition:color 0.2s;}
+    .back-link:hover{color:var(--navy);}
+    .back-link::before{content:'←';}
+    .theme-text h2{font-size:1.45rem;color:var(--navy);margin:2.25rem 0 0.75rem;padding-top:2.25rem;border-top:1.5px solid var(--rule);}
+    .theme-text h2:first-child{margin-top:0;padding-top:0;border-top:none;}
+    .theme-text p{font-size:1rem;color:var(--ink);line-height:1.82;margin-bottom:1rem;}
+    .theme-text ul{margin:0.5rem 0 1rem 1.25rem;}
+    .theme-text li{font-size:1rem;color:var(--ink);line-height:1.78;margin-bottom:0.3rem;}
+    .theme-sidebar{position:sticky;top:calc(var(--nav-h) + 24px);}
+    .theme-img-wrap{border-radius:8px;overflow:hidden;border:1.5px solid var(--rule);box-shadow:0 4px 20px rgba(10,22,40,0.08);margin-bottom:0.75rem;}
+    .img-placeholder{height:280px;background:linear-gradient(135deg,var(--pale) 0%,var(--light) 100%);border:2px dashed var(--rule);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;text-align:center;gap:0.4rem;padding:1rem;}
+    .img-caption{font-family:var(--mono);font-size:0.68rem;color:var(--muted);text-align:center;font-style:italic;margin-bottom:1.5rem;line-height:1.5;}
+    .pub-sidebar{background:var(--pale);border:1.5px solid var(--rule);border-radius:8px;padding:1.5rem;}
+    .pub-sidebar h3{font-size:1rem;color:var(--navy);margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1.5px solid var(--rule);}
+    .pub-list{list-style:none;}
+    .pub-list li{padding:0.7rem 0;border-bottom:1px solid var(--rule);}
+    .pub-list li:last-child{border-bottom:none;}
+    .pub-yr{font-family:var(--mono);font-size:0.63rem;color:var(--accent);display:block;margin-bottom:0.15rem;}
+    .pub-list a{font-size:0.88rem;color:var(--mid);text-decoration:none;line-height:1.48;}
+    .pub-list a:hover{text-decoration:underline;}
+    .btn{display:inline-block;padding:0.65rem 1.5rem;border-radius:4px;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;}
+    .btn-outline-dark{background:transparent;color:var(--mid);border:1.5px solid var(--mid);}
+    .btn-outline-dark:hover{background:var(--light);}
+    footer{background:var(--navy);color:rgba(219,234,254,0.6);padding:3rem 0;}
+    .footer-inner{max-width:var(--max);margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .footer-brand{font-family:var(--serif);font-size:1rem;color:var(--white);font-weight:700;}
+    .footer-links{display:flex;gap:1.5rem;list-style:none;}
+    .footer-links a{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(219,234,254,0.5);text-decoration:none;transition:color 0.2s;}
+    .footer-links a:hover{color:var(--light);}
+    .footer-copy{font-family:var(--mono);font-size:0.7rem;color:rgba(219,234,254,0.35);}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity 0.62s ease,transform 0.62s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    @media(max-width:860px){.theme-layout{grid-template-columns:1fr;}.theme-sidebar{position:static;}}
+    @media(max-width:768px){.nav-links{display:none;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--white);border-bottom:1px solid var(--rule);padding:1.5rem 2rem;gap:0.5rem;}.nav-links.open{display:flex;}.nav-toggle{display:flex;}}
+  </style>
+</head>
+<body>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" style="text-decoration:none;">
+      <div class="nav-logo-placeholder">TMU Logo</div>
+      <!-- <img src="tmu-logo.png" alt="TMU" style="height:42px;width:auto;" /> -->
+    </a>
+    <div class="nav-divider-v"></div>
+    <a href="index.html" class="nav-brand">The <span>Research</span> Lab</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html#research" class="active">Research</a></li>
+      <li><a href="index.html#team">Team</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#news">News</a></li>
+      <li><a href="index.html#conduct">Code of Conduct</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li class="nav-ext"><a href="https://www.torontomu.ca/science/" target="_blank" rel="noopener">Faculty of Science ↗</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="theme-hero">
+  <div class="container hero-inner">
+    <div class="breadcrumb"><a href="index.html#research">Research</a> / Theme 1</div>
+    <h1>📡 <em>Nanoscale Organization of Receptor Signaling</em></h1>
+    <p class="hero-summary">How are signaling receptors organized at the nanoscale on the cell surface, and how does this spatial organization regulate signal output and cell fate?</p>
+  </div>
+</div>
+
+<section class="theme-body">
+  <div class="container">
+    <div class="theme-layout">
+
+      <!-- ══ MAIN TEXT — EDIT ALL CONTENT BELOW ════════════════════════════════
+           Replace the placeholder text with your real content.
+           Add more <h2> sections as needed.
+      ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="theme-text reveal">
+        <a href="index.html#research" class="back-link">All Research Themes</a>
+
+        <h2>Overview</h2>
+        <!-- EDIT: Write your overview paragraph(s) here -->
+        <p>
+          Describe the background and motivation for this research theme. What biological
+          or scientific question is being addressed? What gap in knowledge does this work target?
+        </p>
+        <p>
+          Add as many paragraphs as you need. You can include
+          <a href="#">links to relevant papers</a> or external resources inline.
+        </p>
+
+        <h2>Key Questions</h2>
+        <!-- EDIT: Replace with your actual research questions -->
+        <ul>
+          <li>Research question or hypothesis one</li>
+          <li>Research question or hypothesis two</li>
+          <li>Research question or hypothesis three</li>
+        </ul>
+
+        <h2>Approaches &amp; Methods</h2>
+        <!-- EDIT: Describe your methods -->
+        <p>
+          Describe the experimental methods, model systems, or computational approaches
+          used — e.g. live-cell imaging, CRISPR screens, proteomics,
+          patient-derived cell lines, biosensor development, etc.
+        </p>
+
+        <h2>Significance</h2>
+        <!-- EDIT: Broader impact -->
+        <p>
+          What are the broader implications of this work for human health, disease
+          biology, or the wider scientific community?
+        </p>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="theme-sidebar">
+
+        <!-- ══ THEME IMAGE ══════════════════════════════════════════
+             HOW TO ADD YOUR IMAGE:
+             1. Save your image to the "images/" folder.
+             2. Delete the entire .img-placeholder div below.
+             3. Add this instead (update the filename and alt text):
+                <img src="images/theme-1.jpg"
+                     alt="EDIT: description of what is shown"
+                     style="width:100%;display:block;" />
+        ════════════════════════════════════════════════════════════ -->
+        <div class="theme-img-wrap">
+          <div class="img-placeholder">
+            <div style="font-size:1.8rem;opacity:0.4;">📡</div>
+            <div>Replace with your image</div>
+            <div style="opacity:0.5;font-size:0.62rem;margin-top:0.2rem;">images/theme-1.jpg</div>
+          </div>
+          <!-- After adding your image, remove the placeholder above and use this: -->
+          <!-- <img src="images/theme-1.jpg" alt="EDIT: describe your image" style="width:100%;display:block;" /> -->
+        </div>
+
+        <!-- ══ IMAGE CAPTION ═════════════════════════════════════════
+             EDIT: Replace this text with your real caption.
+             Include: what is shown, imaging technique used,
+             cell type, scale bar (e.g. "Scale bar = 10 μm").
+        ════════════════════════════════════════════════════════════ -->
+        <p class="img-caption">
+          EDIT: Caption — e.g. "Confocal image of [cell type] showing [structure]. Technique: [method]. Scale bar = 10 μm."
+        </p>
+
+        <!-- ══ RELATED PUBLICATIONS ═══════════════════════════════════
+             HOW TO ADD PUBLICATIONS:
+             1. Replace "Title of your paper" with the actual title.
+             2. Replace href="https://doi.org/REPLACE" with the real DOI link.
+             3. Update the year.
+             4. Duplicate an <li> block to add more papers.
+             5. Delete <li> blocks you don't need.
+        ════════════════════════════════════════════════════════════ -->
+        <div class="pub-sidebar">
+          <h3>Related Publications</h3>
+          <ul class="pub-list">
+            <li>
+              <span class="pub-yr">2024</span>
+              <a href="https://doi.org/REPLACE" target="_blank" rel="noopener">
+                Title of your most recent paper on this theme
+              </a>
+            </li>
+            <li>
+              <span class="pub-yr">2023</span>
+              <a href="https://doi.org/REPLACE" target="_blank" rel="noopener">
+                Title of another related publication
+              </a>
+            </li>
+            <li>
+              <span class="pub-yr">2022</span>
+              <a href="https://doi.org/REPLACE" target="_blank" rel="noopener">
+                Title of an earlier key publication
+              </a>
+            </li>
+          </ul>
+          <a href="index.html#publications" class="btn btn-outline-dark" style="display:block;text-align:center;margin-top:1.1rem;font-size:0.72rem;">View All Publications</a>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">The Research Lab · TMU</div>
+    <ul class="footer-links">
+      <li><a href="index.html#research">Research</a></li>
+      <li><a href="index.html#team">Team</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 The Research Lab · Toronto Metropolitan University</div>
+  </div>
+</footer>
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>20));
+  document.getElementById('nav-toggle').addEventListener('click',()=>document.getElementById('nav-links').classList.toggle('open'));
+  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

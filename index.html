@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Research Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0a1628;
+      --blue:   #1a3a6e;
+      --mid:    #2d5fa6;
+      --accent: #3b82f6;
+      --light:  #dbeafe;
+      --pale:   #f0f6ff;
+      --white:  #ffffff;
+      --ink:    #1a1a2e;
+      --muted:  #5a6a88;
+      --rule:   #d0ddf5;
+      --serif:  'Playfair Display', Georgia, serif;
+      --body:   'Source Serif 4', Georgia, serif;
+      --mono:   'JetBrains Mono', monospace;
+      --max:    1180px;
+      --nav-h:  68px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--body); color: var(--ink); background: var(--white); line-height: 1.7; overflow-x: hidden; }
+    h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+    .section    { padding: 90px 0; }
+    .section--alt { background: var(--pale); }
+    hr.divider  { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+    .section-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); display: block; margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+    .section-intro { font-size: 1.1rem; color: var(--muted); max-width: 620px; font-weight: 300; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 999; transition: box-shadow 0.3s;
+    }
+    #nav.scrolled { box-shadow: 0 4px 24px rgba(10,22,40,0.08); }
+    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+    /* TMU LOGO SLOT */
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; text-decoration: none;
+    }
+    .nav-logo-img {
+      height: 42px; width: auto;
+      /* ─────────────────────────────────────────────────────
+         HOW TO ADD YOUR TMU LOGO:
+         1. Download the TMU logo (PNG or SVG) from TMU's brand resources.
+         2. Put it in your project folder alongside index.html.
+         3. Replace the placeholder below by changing src="" to src="tmu-logo.png"
+            and removing the placeholder div.
+         ───────────────────────────────────────────────────── */
+    }
+    .nav-logo-placeholder {
+      height: 42px; width: 100px;
+      background: var(--pale);
+      border: 1.5px dashed var(--rule);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+      letter-spacing: 0.05em; text-align: center; padding: 0 0.4rem;
+    }
+    .nav-divider-v { width: 1px; height: 32px; background: var(--rule); flex-shrink: 0; }
+    .nav-brand { font-family: var(--serif); font-size: 1rem; font-weight: 700; color: var(--navy); text-decoration: none; letter-spacing: -0.01em; white-space: nowrap; }
+    .nav-brand span { color: var(--mid); }
+
+    .nav-links { display: flex; gap: 0.15rem; list-style: none; align-items: center; }
+    .nav-links a { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; text-transform: uppercase; padding: 0.32rem 0.5rem; border-radius: 4px; transition: all 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: var(--mid); background: var(--pale); }
+    .nav-links .nav-ext a { background: var(--mid); color: var(--white); border-radius: 4px; }
+    .nav-links .nav-ext a:hover { background: var(--navy); color: var(--white); }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; }
+
+    /* ── HERO ── */
+    #hero { padding-top: calc(var(--nav-h) + 80px); padding-bottom: 100px; background: var(--navy); position: relative; overflow: hidden; }
+    #hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px); background-size: 48px 48px; }
+    #hero::after  { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-kicker { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+    .hero-kicker::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+    .hero-title  { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900; color: var(--white); line-height: 1.07; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    .hero-title em { font-style: italic; color: var(--light); }
+    .hero-dept   { font-family: var(--mono); font-size: 0.85rem; color: rgba(219,234,254,0.6); letter-spacing: 0.08em; margin-bottom: 2rem; margin-top: 0.5rem; }
+    .hero-desc   { font-size: 1.15rem; color: rgba(219,234,254,0.85); max-width: 580px; font-weight: 300; line-height: 1.75; margin-bottom: 2.5rem; }
+    .hero-ctas   { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 4px; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--light); border: 1px solid rgba(219,234,254,0.3); }
+    .btn-outline:hover { border-color: var(--light); background: rgba(219,234,254,0.07); }
+    .hero-stats  { margin-top: 5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 3rem; flex-wrap: wrap; }
+    .stat-num    { font-family: var(--serif); font-size: 2.2rem; font-weight: 700; color: var(--white); }
+    .stat-label  { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(219,234,254,0.5); margin-top: 0.1rem; }
+
+    /* ── HOME SPLIT: MICROSCOPY + ABOUT ── */
+    #home-split { padding: 80px 0 70px; background: var(--white); }
+    .home-split-grid { display: grid; grid-template-columns: 55fr 45fr; gap: 4rem; align-items: center; }
+
+    /* MICROSCOPY IMAGE PANEL */
+    .micro-panel { position: relative; }
+    .micro-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .micro-label::before { content: ''; display: block; width: 18px; height: 1px; background: var(--mid); }
+
+    /* ─────────────────────────────────────────────────────────────────
+       FEATURED MICROSCOPY IMAGES — HOW TO ADD YOUR IMAGES:
+       1. Create an "images/" folder in your project (next to index.html).
+       2. Upload your microscopy image files there.
+       3. For each slide below, replace the .micro-placeholder div with:
+              <img src="images/micro1.jpg" alt="Description of image"
+                   style="width:100%;height:420px;object-fit:cover;" />
+       4. Update the caption text inside .micro-caption.
+       5. Add more slides by duplicating a <div class="micro-slide"> block.
+    ──────────────────────────────────────────────────────────────────── */
+    .micro-carousel { border-radius: 10px; overflow: hidden; box-shadow: 0 12px 48px rgba(10,22,40,0.14); position: relative; }
+    .micro-track    { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .micro-slide    { min-width: 100%; }
+    .micro-slide img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .micro-placeholder { height: 420px; background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(219,234,254,0.55); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-align: center; gap: 0.6rem; border: 2px dashed rgba(59,130,246,0.3); }
+    .micro-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.4; }
+    .micro-placeholder .ph-hint { font-size: 0.62rem; opacity: 0.45; margin-top: 0.2rem; }
+
+    .micro-caption { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 0.75rem; font-style: italic; letter-spacing: 0.03em; min-height: 1.2em; }
+
+    .micro-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 38px; height: 38px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(10,22,40,0.15); transition: all 0.2s; z-index: 2; color: var(--navy); }
+    .micro-btn:hover { background: var(--white); transform: translateY(-50%) scale(1.08); }
+    .micro-btn.prev { left: 10px; }
+    .micro-btn.next { right: 10px; }
+    .micro-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+    .mdot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.45); border: none; cursor: pointer; padding: 0; transition: all 0.2s; }
+    .mdot.active { background: var(--white); transform: scale(1.3); }
+
+    /* ABOUT PANEL */
+    .about-panel .section-label { margin-bottom: 0.5rem; }
+    .about-panel h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--navy); margin-bottom: 1.2rem; line-height: 1.25; }
+    /* ─────────────────────────────────────────────────────────────────
+       LAB DESCRIPTION — HOW TO EDIT:
+       Replace the text in the <p> tags below with your lab's description.
+       You can add or remove <p> tags as needed.
+    ──────────────────────────────────────────────────────────────────── */
+    .about-panel p  { font-size: 1rem; color: var(--ink); line-height: 1.8; margin-bottom: 1rem; }
+    .about-panel p:last-of-type { margin-bottom: 1.5rem; }
+    .about-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .about-ctas .btn-primary  { background: var(--mid); }
+    .about-ctas .btn-primary:hover { background: var(--navy); }
+    .about-ctas .btn-outline-dark { background: transparent; color: var(--mid); border: 1.5px solid var(--mid); border-radius: 4px; }
+    .about-ctas .btn-outline-dark:hover { background: var(--light); }
+
+    /* ── RESEARCH THEMES ── */
+    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5px; background: var(--rule); border: 1.5px solid var(--rule); border-radius: 8px; overflow: hidden; margin-top: 3rem; }
+    .research-card { background: var(--white); padding: 2.2rem 2rem; text-decoration: none; display: flex; flex-direction: column; transition: background 0.2s; position: relative; }
+    .research-card:hover { background: var(--pale); }
+    .research-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); transform: scaleY(0); transition: transform 0.22s; transform-origin: bottom; }
+    .research-card:hover::before { transform: scaleY(1); }
+    .research-icon { width: 44px; height: 44px; border-radius: 8px; background: var(--light); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.3rem; transition: background 0.2s; }
+    .research-card:hover .research-icon { background: var(--rule); }
+    .research-card h3 { font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.6rem; }
+    .research-card p  { font-size: 0.93rem; color: var(--muted); line-height: 1.65; flex: 1; margin-bottom: 1rem; }
+    .card-link-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); display: flex; align-items: center; gap: 0.35rem; }
+    .card-link-label .arr { transition: transform 0.2s; }
+    .research-card:hover .card-link-label .arr { transform: translateX(5px); }
+
+    /* ── TEAM ── */
+    .team-pi { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; align-items: start; background: var(--white); border: 1.5px solid var(--rule); border-radius: 10px; padding: 2.5rem; margin-bottom: 3rem; }
+    .avatar  { width: 100%; aspect-ratio: 1; border-radius: 8px; background: linear-gradient(135deg, var(--light) 0%, var(--rule) 100%); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 2.5rem; color: var(--mid); font-weight: 700; flex-shrink: 0; }
+    .role-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); background: var(--light); padding: 0.25rem 0.6rem; border-radius: 3px; display: inline-block; margin-bottom: 0.8rem; }
+    .pi-info h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .pi-info .pi-title { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; font-style: italic; }
+    .pi-info p  { font-size: 0.97rem; color: var(--ink); line-height: 1.7; margin-bottom: 1rem; }
+    .pi-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .pi-link  { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--mid); text-decoration: none; border: 1px solid var(--rule); padding: 0.3rem 0.75rem; border-radius: 3px; transition: all 0.2s; }
+    .pi-link:hover { background: var(--light); border-color: var(--mid); }
+
+    .team-section-title { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin: 2.5rem 0 1.1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--rule); }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 1rem; }
+    .member-card { background: var(--white); border: 1.5px solid var(--rule); border-radius: 8px; padding: 1.5rem 1.25rem; text-align: center; transition: box-shadow 0.2s, transform 0.2s; }
+    .member-card:hover { box-shadow: 0 6px 24px rgba(10,22,40,0.08); transform: translateY(-2px); }
+    .member-avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--light), var(--rule)); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.2rem; font-weight: 700; color: var(--mid); margin: 0 auto 0.85rem; }
+    .member-card h4   { font-size: 0.95rem; color: var(--navy); margin-bottom: 0.25rem; }
+    .member-card .role { font-family: var(--mono); font-size: 0.65rem; color: var(--mid); letter-spacing: 0.06em; text-transform: uppercase; }
+    .member-card .member-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.5; }
+
+    /* ── PUBLICATIONS ── */
+    .pub-filters { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .pub-filter  { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 3px; border: 1.5px solid var(--rule); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.2s; }
+    .pub-filter.active, .pub-filter:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .pub-list  { display: flex; flex-direction: column; }
+    .pub-item  { padding: 1.75rem 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; align-items: start; }
+    .pub-year  { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); font-weight: 500; padding-top: 0.2rem; }
+    .pub-title { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; line-height: 1.45; }
+    .pub-authors { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-bottom: 0.3rem; }
+    .pub-journal { font-size: 0.82rem; color: var(--mid); font-family: var(--mono); letter-spacing: 0.02em; }
+    .pub-tag   { display: inline-block; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--light); color: var(--mid); padding: 0.15rem 0.5rem; border-radius: 2px; margin-left: 0.5rem; }
+
+    /* ── NEWS ── */
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; margin-top: 3rem; }
+    .news-card { border: 1.5px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--white); transition: box-shadow 0.2s; }
+    .news-card:hover { box-shadow: 0 6px 28px rgba(10,22,40,0.09); }
+    .news-header { height: 6px; background: linear-gradient(90deg, var(--mid), var(--accent)); }
+    .news-body   { padding: 1.75rem; }
+    .news-date   { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
+    .news-card h3 { font-size: 1.05rem; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.4; }
+    .news-card p  { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .news-category { display: inline-block; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--light); color: var(--mid); padding: 0.2rem 0.55rem; border-radius: 2px; margin-top: 1rem; }
+
+    /* ── FUNDING AGENCIES ── */
+    /* ─────────────────────────────────────────────────────────────────
+       FUNDING LOGOS — HOW TO ADD YOUR LOGOS:
+       1. Download the logo images from each funding agency's website.
+       2. Put them in your "images/" folder (e.g. images/nserc.png).
+       3. For each funder, replace the .funder-ph div with:
+              <img src="images/nserc.png" alt="NSERC" />
+       4. Add or remove .funder-slot blocks as needed.
+    ──────────────────────────────────────────────────────────────────── */
+    #funding { padding: 60px 0 70px; border-top: 1.5px solid var(--rule); }
+    .funding-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .funding-label::before, .funding-label::after { content: ''; display: block; flex: 1; max-width: 120px; height: 1px; background: var(--rule); }
+    .funding-logos { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2.5rem 5rem; }
+    .funder-slot { display: flex; align-items: center; justify-content: center; }
+    .funder-slot img { max-height: 68px; max-width: 170px; object-fit: contain; filter: grayscale(15%); opacity: 0.82; transition: all 0.25s; }
+    .funder-slot img:hover { opacity: 1; filter: none; }
+    .funder-ph { height: 60px; width: 150px; background: var(--pale); border: 1.5px dashed var(--rule); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.06em; text-align: center; gap: 0.2rem; }
+
+    /* ── CODE OF CONDUCT ── */
+    .conduct-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .conduct-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .conduct-num  { font-family: var(--serif); font-size: 2.5rem; font-weight: 900; color: var(--light); line-height: 1; flex-shrink: 0; width: 2.5rem; text-align: center; }
+    .conduct-item h4 { font-size: 1rem; color: var(--navy); margin-bottom: 0.4rem; }
+    .conduct-item p  { font-size: 0.92rem; color: var(--muted); line-height: 1.65; }
+    .conduct-banner { background: var(--navy); color: var(--white); border-radius: 10px; padding: 2.5rem 3rem; margin-top: 3rem; position: relative; overflow: hidden; }
+    .conduct-banner::after { content: '§'; position: absolute; right: 2.5rem; top: 50%; transform: translateY(-50%); font-family: var(--serif); font-size: 8rem; color: rgba(255,255,255,0.05); pointer-events: none; }
+    .conduct-banner h3 { font-size: 1.3rem; color: var(--white); margin-bottom: 0.5rem; }
+    .conduct-banner p  { color: rgba(219,234,254,0.75); font-size: 0.97rem; max-width: 600px; }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; align-items: start; }
+    .contact-info h3 { font-size: 1.6rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .contact-info p  { color: var(--muted); font-size: 0.97rem; margin-bottom: 2rem; }
+    .contact-detail  { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem; }
+    .contact-icon    { width: 36px; height: 36px; background: var(--light); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-detail-text strong { display: block; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.1rem; }
+    .contact-detail-text span   { font-size: 0.95rem; color: var(--ink); }
+    .join-box { background: var(--pale); border: 1.5px solid var(--rule); border-radius: 10px; padding: 2.5rem; }
+    .join-box h3 { font-size: 1.4rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .join-box p  { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.7; }
+    .join-positions { list-style: none; margin-bottom: 2rem; }
+    .join-positions li { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--rule); font-size: 0.92rem; color: var(--ink); }
+    .join-positions li::before { content: '→'; font-family: var(--mono); color: var(--accent); font-size: 0.8rem; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); color: rgba(219,234,254,0.6); padding: 3rem 0; }
+    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { font-family: var(--serif); font-size: 1rem; color: var(--white); font-weight: 700; }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(219,234,254,0.5); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--light); }
+    .footer-copy { font-family: var(--mono); font-size: 0.7rem; color: rgba(219,234,254,0.35); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .home-split-grid { grid-template-columns: 1fr; }
+      .micro-slide img, .micro-placeholder { height: 300px; }
+      .team-pi { grid-template-columns: 1fr; }
+      .team-pi .avatar { width: 110px; height: 110px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .pub-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      .hero-stats { gap: 2rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--rule); padding: 1.5rem 2rem; gap: 0.5rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+
+    <!-- TMU LOGO — replace placeholder once you have the logo file -->
+    <a href="#hero" class="nav-logo">
+      <!--
+        TO ADD YOUR TMU LOGO:
+        1. Save your TMU logo as "tmu-logo.png" in the same folder as index.html
+        2. Delete the <div class="nav-logo-placeholder"> below
+        3. Uncomment the <img> line below it:
+      -->
+      <div class="nav-logo-placeholder">TMU Logo</div>
+      <!-- <img src="tmu-logo.png" alt="Toronto Metropolitan University" class="nav-logo-img" /> -->
+    </a>
+
+    <div class="nav-divider-v"></div>
+
+    <!-- EDIT: Replace with your lab name -->
+    <a href="#hero" class="nav-brand">The <span>Research</span> Lab</a>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#research">Research</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#conduct">Code of Conduct</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li class="nav-ext"><a href="https://www.torontomu.ca/science/" target="_blank" rel="noopener">Faculty of Science ↗</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="container hero-inner">
+    <!-- EDIT: Replace with your university and department -->
+    <div class="hero-kicker">Toronto Metropolitan University · Department of Chemistry &amp; Biology</div>
+    <!-- EDIT: Replace with your lab name -->
+    <h1 class="hero-title">The <em>Research</em><br>Lab</h1>
+    <!-- EDIT: Replace with PI name -->
+    <p class="hero-dept">Principal Investigator: Dr. Firstname Lastname</p>
+    <!-- EDIT: Replace with your lab's research description -->
+    <p class="hero-desc">
+      We investigate the nanoscale organization of cellular membranes, receptor signaling,
+      and organelle dynamics — developing new tools and therapies at the frontier of
+      quantitative cell biology.
+    </p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn btn-primary">Explore Our Research</a>
+      <a href="#contact" class="btn btn-outline">Join the Lab</a>
+    </div>
+    <!-- EDIT: Update these numbers to reflect your lab -->
+    <div class="hero-stats">
+      <div><div class="stat-num">19</div><div class="stat-label">Lab Members</div></div>
+      <div><div class="stat-num">48</div><div class="stat-label">Publications</div></div>
+      <div><div class="stat-num">6</div><div class="stat-label">Research Themes</div></div>
+      <div><div class="stat-num">2014</div><div class="stat-label">Founded</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     HOME SPLIT: MICROSCOPY CAROUSEL + LAB DESCRIPTION
+══════════════════════════════════════════════════ -->
+<section id="home-split">
+  <div class="container">
+    <div class="home-split-grid">
+
+      <!-- LEFT: FEATURED MICROSCOPY IMAGES -->
+      <div class="micro-panel">
+        <div class="micro-label">Featured Microscopy Images</div>
+        <div class="micro-carousel">
+          <div class="micro-track" id="micro-track">
+
+            <!-- ══ SLIDE 1 ══════════════════════════════════════
+                 TO ADD YOUR IMAGE: replace the micro-placeholder
+                 div below with:
+                 <img src="images/micro1.jpg"
+                      alt="Brief description of what is shown"
+                      style="width:100%;height:420px;object-fit:cover;" />
+            ══════════════════════════════════════════════════ -->
+            <div class="micro-slide">
+              <div class="micro-placeholder">
+                <div class="ph-icon">🔬</div>
+                <div>Replace with microscopy image</div>
+                <div class="ph-hint">images/micro1.jpg · recommended: 900×420px</div>
+              </div>
+            </div>
+
+            <!-- ══ SLIDE 2 ══════════════════════════════════════ -->
+            <div class="micro-slide">
+              <div class="micro-placeholder">
+                <div class="ph-icon">🔬</div>
+                <div>Replace with microscopy image</div>
+                <div class="ph-hint">images/micro2.jpg</div>
+              </div>
+            </div>
+
+            <!-- ══ SLIDE 3 ══════════════════════════════════════ -->
+            <div class="micro-slide">
+              <div class="micro-placeholder">
+                <div class="ph-icon">🔬</div>
+                <div>Replace with microscopy image</div>
+                <div class="ph-hint">images/micro3.jpg</div>
+              </div>
+            </div>
+
+            <!-- ══ SLIDE 4 — duplicate this block to add more slides ══ -->
+            <div class="micro-slide">
+              <div class="micro-placeholder">
+                <div class="ph-icon">🔬</div>
+                <div>Replace with microscopy image</div>
+                <div class="ph-hint">images/micro4.jpg</div>
+              </div>
+            </div>
+
+          </div><!-- /micro-track -->
+          <button class="micro-btn prev" id="micro-prev">&#8592;</button>
+          <button class="micro-btn next" id="micro-next">&#8594;</button>
+          <div class="micro-dots" id="micro-dots"></div>
+        </div>
+
+        <!-- EDIT: Update caption for each slide via JavaScript below,
+             or just change the default text here -->
+        <div class="micro-caption" id="micro-caption">
+          Replace with a caption describing this image — cell type, technique, scale bar, etc.
+        </div>
+      </div>
+
+      <!-- RIGHT: LAB DESCRIPTION -->
+      <div class="about-panel reveal">
+        <span class="section-label">About Our Lab</span>
+        <!-- EDIT: Replace heading with your research focus -->
+        <h2>Quantitative Cell Biology at the Nanoscale</h2>
+
+        <!-- EDIT: Replace these paragraphs with your lab description -->
+        <p>
+          Welcome to the [Lab Name] at Toronto Metropolitan University. Our research focuses on
+          understanding how cells organize their membranes, communicate through receptors, and
+          regulate organelle function in health and disease.
+        </p>
+        <p>
+          We combine advanced fluorescence microscopy, biochemistry, and cell biology to
+          investigate fundamental questions in membrane biology — and to develop new tools
+          and therapeutic strategies.
+        </p>
+        <p>
+          We are a diverse, collaborative group committed to rigorous science and the
+          mentorship of trainees at all levels.
+        </p>
+
+        <div class="about-ctas">
+          <a href="#research" class="btn btn-primary">Our Research</a>
+          <a href="#contact" class="btn btn-outline-dark">Join the Lab</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     RESEARCH THEMES
+══════════════════════════════════════════════════ -->
+<section id="research" class="section section--alt">
+  <div class="container">
+    <span class="section-label reveal">Research Areas</span>
+    <h2 class="section-title reveal">What We Study</h2>
+    <!-- EDIT: Update the intro paragraph -->
+    <p class="section-intro reveal">
+      Our lab investigates membrane biology and cell signaling through six interconnected research themes,
+      combining quantitative microscopy, biochemistry, and chemical biology.
+    </p>
+
+    <div class="research-grid reveal">
+
+      <!-- THEME 1 -->
+      <a href="research-theme-1.html" class="research-card">
+        <div class="research-icon">📡</div>
+        <h3>Nanoscale Organization of Receptor Signaling</h3>
+        <p>How are signaling receptors organized at the nanoscale on the cell surface, and how does this spatial organization regulate signal output?</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+      <!-- THEME 2 -->
+      <a href="research-theme-2.html" class="research-card">
+        <div class="research-icon">⚡</div>
+        <h3>Cell Metabolism and Organelle Dynamics</h3>
+        <p>How do metabolic states influence organelle morphology, positioning, and function? We investigate mitochondria, lysosomes, and ER remodeling.</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+      <!-- THEME 3 -->
+      <a href="research-theme-3.html" class="research-card">
+        <div class="research-icon">💊</div>
+        <h3>Therapy and Targeted Drug Delivery Development</h3>
+        <p>Leveraging our understanding of membrane trafficking to design targeted drug delivery systems and identify novel therapeutic strategies.</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+      <!-- THEME 4 -->
+      <a href="research-theme-4.html" class="research-card">
+        <div class="research-icon">🔄</div>
+        <h3>Clathrin Mediated Endocytosis</h3>
+        <p>Dissecting the molecular machinery that drives clathrin-coated pit nucleation, maturation, and scission at the plasma membrane.</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+      <!-- THEME 5 -->
+      <a href="research-theme-5.html" class="research-card">
+        <div class="research-icon">🧪</div>
+        <h3>Phosphoinositides and Lipid Signalling</h3>
+        <p>How do phosphoinositide lipids orchestrate membrane identity, vesicle trafficking, and signal transduction across cellular compartments?</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+      <!-- THEME 6 -->
+      <a href="research-theme-6.html" class="research-card">
+        <div class="research-icon">🔭</div>
+        <h3>Developing New Tools for Microscopy</h3>
+        <p>Engineering fluorescent probes, biosensors, and imaging approaches to push the boundaries of what can be observed in living cells.</p>
+        <div class="card-link-label">Learn more <span class="arr">→</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     TEAM
+══════════════════════════════════════════════════ -->
+<section id="team" class="section">
+  <div class="container">
+    <span class="section-label reveal">People</span>
+    <h2 class="section-title reveal">Our Team</h2>
+    <p class="section-intro reveal">A diverse group of scientists united by curiosity, rigour, and a commitment to collaborative research.</p>
+
+    <!-- PI — EDIT all fields -->
+    <div class="team-pi reveal">
+      <div class="avatar">PI</div><!-- Replace "PI" with initials, or swap for <img src="images/pi-photo.jpg"> -->
+      <div class="pi-info">
+        <span class="role-tag">Principal Investigator</span>
+        <h3>Dr. Firstname Lastname</h3><!-- EDIT -->
+        <p class="pi-title">Associate Professor, Department of Chemistry &amp; Biology · Toronto Metropolitan University</p><!-- EDIT -->
+        <p>Dr. Lastname received their PhD from [University] in [year] and completed postdoctoral training at [Institution]. Their research focuses on [topic]. They joined TMU in [year].</p><!-- EDIT -->
+        <div class="pi-links">
+          <a href="#" class="pi-link">✉ Email</a>
+          <a href="#" class="pi-link">Google Scholar</a>
+          <a href="#" class="pi-link">Twitter / X</a>
+          <a href="#" class="pi-link">LinkedIn</a>
+          <a href="#" class="pi-link">CV</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- POSTDOCTORAL FELLOW (1) -->
+    <div class="team-section-title reveal">Postdoctoral Fellow</div>
+    <div class="team-grid reveal">
+      <div class="member-card">
+        <div class="member-avatar">PF</div>
+        <h4>Name</h4><!-- EDIT -->
+        <span class="role">Postdoctoral Fellow</span>
+        <p class="member-desc">Research interests and current project.</p><!-- EDIT -->
+      </div>
+    </div>
+
+    <!-- PHD STUDENTS (7) -->
+    <div class="team-section-title reveal">PhD Students</div>
+    <div class="team-grid reveal">
+      <div class="member-card"><div class="member-avatar">S1</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div><!-- EDIT ×7 -->
+      <div class="member-card"><div class="member-avatar">S2</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card"><div class="member-avatar">S3</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card"><div class="member-avatar">S4</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card"><div class="member-avatar">S5</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card"><div class="member-avatar">S6</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card"><div class="member-avatar">S7</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+    </div>
+
+    <!-- MASTERS STUDENTS (2) -->
+    <div class="team-section-title reveal">Master's Students</div>
+    <div class="team-grid reveal">
+      <div class="member-card"><div class="member-avatar">M1</div><h4>Name</h4><span class="role">MSc Student</span><p class="member-desc">Research interests.</p></div><!-- EDIT ×2 -->
+      <div class="member-card"><div class="member-avatar">M2</div><h4>Name</h4><span class="role">MSc Student</span><p class="member-desc">Research interests.</p></div>
+    </div>
+
+    <!-- RA / LAB MANAGER (1) -->
+    <div class="team-section-title reveal">Research Associate &amp; Lab Manager</div>
+    <div class="team-grid reveal">
+      <div class="member-card"><div class="member-avatar">RA</div><h4>Name</h4><span class="role">RA / Lab Manager</span><p class="member-desc">Oversees day-to-day lab operations and supports all research projects.</p></div><!-- EDIT -->
+    </div>
+
+    <!-- UNDERGRADS (8) -->
+    <div class="team-section-title reveal">Undergraduate Researchers</div>
+    <div class="team-grid reveal">
+      <div class="member-card"><div class="member-avatar">U1</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div><!-- EDIT ×8 -->
+      <div class="member-card"><div class="member-avatar">U2</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U3</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U4</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U5</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U6</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U7</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card"><div class="member-avatar">U8</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+    </div>
+
+    <hr class="divider reveal">
+    <p class="reveal" style="font-size:0.9rem;color:var(--muted);font-style:italic;">
+      <strong style="color:var(--navy);font-style:normal;">Alumni</strong> — We are proud of our lab alumni who have gone on to positions at leading institutions. A full alumni list is available upon request.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     PUBLICATIONS
+══════════════════════════════════════════════════ -->
+<section id="publications" class="section section--alt">
+  <div class="container">
+    <span class="section-label reveal">Scholarship</span>
+    <h2 class="section-title reveal">Selected Publications</h2>
+    <p class="section-intro reveal">A selection of our recent work. For a complete list, see <a href="#" style="color:var(--mid);">Google Scholar</a>.</p><!-- EDIT: add Google Scholar link -->
+
+    <div class="pub-filters reveal">
+      <button class="pub-filter active" onclick="filterPubs('all',this)">All</button>
+      <button class="pub-filter" onclick="filterPubs('2024',this)">2024</button>
+      <button class="pub-filter" onclick="filterPubs('2023',this)">2023</button>
+      <button class="pub-filter" onclick="filterPubs('2022',this)">2022</button>
+    </div>
+
+    <!-- EDIT: Replace with your real publications. Duplicate .pub-item blocks to add more. -->
+    <div class="pub-list reveal" id="pub-list">
+      <div class="pub-item" data-year="2024">
+        <div class="pub-year">2024</div>
+        <div>
+          <div class="pub-title">Paper title here <span class="pub-tag">Open Access</span></div>
+          <div class="pub-authors">Author A, Author B, Lastname PI</div>
+          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+        </div>
+      </div>
+      <div class="pub-item" data-year="2023">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Paper title here <span class="pub-tag">Review</span></div>
+          <div class="pub-authors">Author A, Author B, Lastname PI</div>
+          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+        </div>
+      </div>
+      <div class="pub-item" data-year="2022">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">Paper title here</div>
+          <div class="pub-authors">Author A, Lastname PI</div>
+          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     NEWS
+══════════════════════════════════════════════════ -->
+<section id="news" class="section">
+  <div class="container">
+    <span class="section-label reveal">Updates</span>
+    <h2 class="section-title reveal">News &amp; Events</h2>
+    <p class="section-intro reveal">The latest from the lab — awards, new papers, presentations, and milestones.</p>
+    <!-- EDIT: Replace with your news. Duplicate .news-card blocks to add more. -->
+    <div class="news-grid">
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">December 2024</div><h3>Lab Member wins [Award Name]</h3><p>Congratulations to [Name] for receiving [Award] in recognition of their contributions to [field].</p><span class="news-category">Award</span></div></div>
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">November 2024</div><h3>New paper published in [Journal]</h3><p>Our latest work on [topic] is now available. The study reveals [key finding].</p><span class="news-category">Publication</span></div></div>
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">October 2024</div><h3>PI presents at [Conference Name]</h3><p>Dr. Lastname gave an invited talk at [Conference] presenting our recent findings on [topic].</p><span class="news-category">Conference</span></div></div>
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">September 2024</div><h3>Welcome to our new lab members!</h3><p>We are excited to welcome [Names] to the lab this fall.</p><span class="news-category">Lab Life</span></div></div>
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">July 2024</div><h3>Lab receives [Grant] funding</h3><p>We are grateful to [Agency] for supporting our research on [topic].</p><span class="news-category">Funding</span></div></div>
+      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">May 2024</div><h3>Congratulations, Dr. [Name]!</h3><p>[Name] successfully defended their doctoral thesis on [topic]. Best wishes in their next position.</p><span class="news-category">Milestone</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FUNDING AGENCIES
+══════════════════════════════════════════════════ -->
+<section id="funding" class="section--alt">
+  <div class="container" style="padding-top:0;padding-bottom:0;">
+    <div id="funding">
+      <div class="funding-label">Gratefully Funded By</div>
+      <div class="funding-logos reveal">
+
+        <!-- FUNDER 1 — replace .funder-ph with <img src="images/nserc.png" alt="NSERC"> -->
+        <div class="funder-slot">
+          <div class="funder-ph">
+            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
+            <div>Funder Logo</div>
+            <div style="opacity:0.5;font-size:0.58rem;">images/funder1.png</div>
+          </div>
+        </div>
+
+        <!-- FUNDER 2 -->
+        <div class="funder-slot">
+          <div class="funder-ph">
+            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
+            <div>Funder Logo</div>
+            <div style="opacity:0.5;font-size:0.58rem;">images/funder2.png</div>
+          </div>
+        </div>
+
+        <!-- FUNDER 3 -->
+        <div class="funder-slot">
+          <div class="funder-ph">
+            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
+            <div>Funder Logo</div>
+            <div style="opacity:0.5;font-size:0.58rem;">images/funder3.png</div>
+          </div>
+        </div>
+
+        <!-- FUNDER 4 — add or remove .funder-slot blocks as needed -->
+        <div class="funder-slot">
+          <div class="funder-ph">
+            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
+            <div>Funder Logo</div>
+            <div style="opacity:0.5;font-size:0.58rem;">images/funder4.png</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CODE OF CONDUCT
+══════════════════════════════════════════════════ -->
+<section id="conduct" class="section">
+  <div class="container">
+    <span class="section-label reveal">Our Commitments</span>
+    <h2 class="section-title reveal">Code of Conduct</h2>
+    <p class="section-intro reveal">We are committed to creating a respectful, inclusive, and scientifically rigorous environment where every member can thrive.</p>
+    <!-- EDIT: Replace descriptions with your actual code of conduct -->
+    <div class="conduct-grid">
+      <div class="conduct-item reveal"><div class="conduct-num">01</div><div><h4>Respect &amp; Inclusion</h4><p>We treat all members with dignity regardless of background, identity, or experience level. Discrimination, harassment, and exclusion are not tolerated.</p></div></div>
+      <div class="conduct-item reveal"><div class="conduct-num">02</div><div><h4>Scientific Integrity</h4><p>We conduct and report research honestly and transparently. Fabrication, falsification, and plagiarism violate our shared values and institutional policy.</p></div></div>
+      <div class="conduct-item reveal"><div class="conduct-num">03</div><div><h4>Open Collaboration</h4><p>We share knowledge generously, give credit fairly, and communicate openly. We value collaboration over competition.</p></div></div>
+      <div class="conduct-item reveal"><div class="conduct-num">04</div><div><h4>Wellbeing &amp; Balance</h4><p>We respect that lab members are whole people. We support mental health, reasonable working hours, and time outside the lab.</p></div></div>
+      <div class="conduct-item reveal"><div class="conduct-num">05</div><div><h4>Mentorship &amp; Growth</h4><p>We invest in each member's scientific and personal development. Constructive feedback and career guidance are part of everyday lab culture.</p></div></div>
+      <div class="conduct-item reveal"><div class="conduct-num">06</div><div><h4>Reporting &amp; Accountability</h4><p>Anyone who experiences or witnesses misconduct is encouraged to speak with the PI or use institutional reporting channels.</p></div></div>
+    </div>
+    <div class="conduct-banner reveal">
+      <h3>Questions or Concerns?</h3>
+      <!-- EDIT: Replace with your actual contact/reporting info -->
+      <p>If you have questions about our code of conduct or wish to raise a concern, please reach out to Dr. Lastname directly or contact the TMU Graduate Coordinator. You may also use TMU's formal complaint procedures.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════════ -->
+<section id="contact" class="section section--alt">
+  <div class="container">
+    <span class="section-label reveal">Get in Touch</span>
+    <h2 class="section-title reveal">Contact &amp; Join Us</h2>
+    <div class="contact-grid">
+      <!-- EDIT: Replace with your real contact information -->
+      <div class="contact-info reveal">
+        <h3>Find Us</h3>
+        <p>We are always interested in connecting with motivated researchers at all career stages.</p>
+        <div class="contact-detail"><div class="contact-icon">📍</div><div class="contact-detail-text"><strong>Address</strong><span>Room XXX, Building Name<br>Toronto Metropolitan University<br>Toronto, ON M5B 2K3</span></div></div>
+        <div class="contact-detail"><div class="contact-icon">✉️</div><div class="contact-detail-text"><strong>Email</strong><span>pi.lastname@torontomu.ca</span></div></div>
+        <div class="contact-detail"><div class="contact-icon">🐦</div><div class="contact-detail-text"><strong>Twitter / X</strong><span>@LabHandle</span></div></div>
+        <div class="contact-detail"><div class="contact-icon">🔗</div><div class="contact-detail-text"><strong>GitHub</strong><span>github.com/labhandle</span></div></div>
+      </div>
+      <div class="join-box reveal">
+        <h3>Join Our Lab</h3>
+        <p>We welcome applications from curious, collaborative, and driven individuals. Please send a CV, a brief statement of research interests, and the names of two references to the email above.</p>
+        <ul class="join-positions">
+          <li>PhD Students (September &amp; January intake)</li>
+          <li>Postdoctoral Fellows (rolling applications)</li>
+          <li>Master's Students</li>
+          <li>Undergraduate Research Assistants</li>
+          <li>Visiting Researchers &amp; Scholars</li>
+        </ul>
+        <!-- EDIT: Replace with your actual email address -->
+        <a href="mailto:pi.lastname@torontomu.ca" class="btn btn-primary">Send an Application</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">The Research Lab · TMU</div><!-- EDIT -->
+    <ul class="footer-links">
+      <li><a href="#research">Research</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 The Research Lab · Toronto Metropolitan University</div>
+  </div>
+</footer>
+
+<script>
+  // Nav shadow on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+  // Mobile nav toggle
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+
+  // ── MICROSCOPY CAROUSEL ──────────────────────────
+  // CAPTIONS: Edit these to match your images (one per slide, in order)
+  const captions = [
+    'Replace with caption for image 1 — cell type, technique, scale bar, etc.',
+    'Replace with caption for image 2.',
+    'Replace with caption for image 3.',
+    'Replace with caption for image 4.',
+  ];
+
+  const mtrack   = document.getElementById('micro-track');
+  const mslides  = mtrack.querySelectorAll('.micro-slide');
+  const mdotsEl  = document.getElementById('micro-dots');
+  const mCapEl   = document.getElementById('micro-caption');
+  let mcur = 0, mtimer;
+
+  mslides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'mdot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+    d.addEventListener('click', () => { mGoTo(i); mResetTimer(); });
+    mdotsEl.appendChild(d);
+  });
+
+  function mGoTo(n) {
+    mcur = (n + mslides.length) % mslides.length;
+    mtrack.style.transform = `translateX(-${mcur * 100}%)`;
+    document.querySelectorAll('.mdot').forEach((d,i) => d.classList.toggle('active', i === mcur));
+    if (mCapEl && captions[mcur]) mCapEl.textContent = captions[mcur];
+  }
+
+  document.getElementById('micro-prev').addEventListener('click', () => { mGoTo(mcur-1); mResetTimer(); });
+  document.getElementById('micro-next').addEventListener('click', () => { mGoTo(mcur+1); mResetTimer(); });
+  function mResetTimer() { clearInterval(mtimer); mtimer = setInterval(() => mGoTo(mcur+1), 5500); }
+  mResetTimer();
+
+  // ── SCROLL REVEAL ────────────────────────────────
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ── PUBLICATION FILTER ───────────────────────────
+  function filterPubs(year, btn) {
+    document.querySelectorAll('.pub-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pub-item').forEach(item => {
+      item.style.display = (year === 'all' || item.dataset.year === year) ? 'grid' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
