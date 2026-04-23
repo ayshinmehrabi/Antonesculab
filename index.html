@@ -22,7 +22,7 @@
       --body:   'Source Serif 4', Georgia, serif;
       --mono:   'JetBrains Mono', monospace;
       --max:    1180px;
-      ---h:  68px;
+      --nav-h:  68px;
     }
     html { scroll-behavior: smooth; font-size: 16px; }
     body { font-family: var(--body); color: var(--ink); background: var(--white); line-height: 1.7; overflow-x: hidden; }
@@ -46,34 +46,10 @@
     }
     #nav.scrolled { box-shadow: 0 4px 24px rgba(10,22,40,0.08); }
     .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-
-    /* TMU LOGO SLOT */
-    .nav-logo {
-      display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; text-decoration: none;
-    }
-    .nav-logo-img {
-      height: 42px; width: auto;
-      /* ─────────────────────────────────────────────────────
-         HOW TO ADD YOUR TMU LOGO:
-         1. Download the TMU logo (PNG or SVG) from TMU's brand resources.
-         2. Put it in your project folder alongside index.html.
-         3. Replace the placeholder below by changing src="" to src="tmu-logo.png"
-            and removing the placeholder div.
-         ───────────────────────────────────────────────────── */
-    }
-    .nav-logo-placeholder {
-      height: 42px; width: 100px;
-      background: var(--pale);
-      border: 1.5px dashed var(--rule);
-      border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
-      letter-spacing: 0.05em; text-align: center; padding: 0 0.4rem;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; text-decoration: none; }
     .nav-divider-v { width: 1px; height: 32px; background: var(--rule); flex-shrink: 0; }
     .nav-brand { font-family: var(--serif); font-size: 1rem; font-weight: 700; color: var(--navy); text-decoration: none; letter-spacing: -0.01em; white-space: nowrap; }
     .nav-brand span { color: var(--mid); }
-
     .nav-links { display: flex; gap: 0.15rem; list-style: none; align-items: center; }
     .nav-links a { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; text-transform: uppercase; padding: 0.32rem 0.5rem; border-radius: 4px; transition: all 0.2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--mid); background: var(--pale); }
@@ -83,9 +59,38 @@
     .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; }
 
     /* ── HERO ── */
-    #hero { padding-top: calc(var(--nav-h) + 80px); padding-bottom: 80px; background: var(--navy); position: relative; overflow: hidden; }
-    #hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px); background-size: 48px 48px; }
-    #hero::after  { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+    /*
+      HOW TO ADD YOUR HERO BACKGROUND IMAGE:
+      1. Upload your image to the GitHub repo (same folder as index.html).
+      2. In the #hero rule below, replace:
+              background-color: var(--navy);
+         with:
+              background-image: url('your-image-filename.jpg');
+         Keep all other lines exactly as they are.
+      The dark overlay (::before) will automatically dim the photo
+      so the white text stays legible.
+    */
+    #hero {
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 80px;
+      background-color: var(--navy);   /* ← replace with background-image: url('...') */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Dark overlay — keeps text readable over any photo.
+       Adjust the last value (0.62) between 0 and 1:
+       lower = more photo visible, higher = darker overlay. */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 22, 40, 0.62);
+      z-index: 0;
+    }
+    #hero::after  { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; z-index: 0; }
     .hero-inner { position: relative; z-index: 1; }
     .hero-kicker { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
     .hero-kicker::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
@@ -103,25 +108,12 @@
     .stat-num    { font-family: var(--serif); font-size: 2.2rem; font-weight: 700; color: var(--white); }
     .stat-label  { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(219,234,254,0.5); margin-top: 0.1rem; }
 
-    /* ── HOME SPLIT: MICROSCOPY + ABOUT ── */
+    /* ── HOME SPLIT ── */
     #home-split { padding: 80px 0 70px; background: var(--white); }
     .home-split-grid { display: grid; grid-template-columns: 55fr 45fr; gap: 4rem; align-items: center; }
-
-    /* MICROSCOPY IMAGE PANEL */
     .micro-panel { position: relative; }
     .micro-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
     .micro-label::before { content: ''; display: block; width: 18px; height: 1px; background: var(--mid); }
-
-    /* ─────────────────────────────────────────────────────────────────
-       FEATURED MICROSCOPY IMAGES — HOW TO ADD YOUR IMAGES:
-       1. Create an "images/" folder in your project (next to index.html).
-       2. Upload your microscopy image files there.
-       3. For each slide below, replace the .micro-placeholder div with:
-              <img src="images/micro1.jpg" alt="Description of image"
-                   style="width:100%;height:420px;object-fit:cover;" />
-       4. Update the caption text inside .micro-caption.
-       5. Add more slides by duplicating a <div class="micro-slide"> block.
-    ──────────────────────────────────────────────────────────────────── */
     .micro-carousel { border-radius: 10px; overflow: hidden; box-shadow: 0 12px 48px rgba(10,22,40,0.14); position: relative; }
     .micro-track    { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
     .micro-slide    { min-width: 100%; }
@@ -129,9 +121,7 @@
     .micro-placeholder { height: 420px; background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(219,234,254,0.55); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-align: center; gap: 0.6rem; border: 2px dashed rgba(59,130,246,0.3); }
     .micro-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.4; }
     .micro-placeholder .ph-hint { font-size: 0.62rem; opacity: 0.45; margin-top: 0.2rem; }
-
     .micro-caption { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 0.75rem; font-style: italic; letter-spacing: 0.03em; min-height: 1.2em; }
-
     .micro-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 38px; height: 38px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(10,22,40,0.15); transition: all 0.2s; z-index: 2; color: var(--navy); }
     .micro-btn:hover { background: var(--white); transform: translateY(-50%) scale(1.08); }
     .micro-btn.prev { left: 10px; }
@@ -139,15 +129,7 @@
     .micro-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
     .mdot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.45); border: none; cursor: pointer; padding: 0; transition: all 0.2s; }
     .mdot.active { background: var(--white); transform: scale(1.3); }
-
-    /* ABOUT PANEL */
     .about-panel .section-label { margin-bottom: 0.5rem; }
-    .about-panel h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--navy); margin-bottom: 1.2rem; line-height: 1.25; }
-    /* ─────────────────────────────────────────────────────────────────
-       LAB DESCRIPTION — HOW TO EDIT:
-       Replace the text in the <p> tags below with your lab's description.
-       You can add or remove <p> tags as needed.
-    ──────────────────────────────────────────────────────────────────── */
     .about-panel p  { font-size: 1rem; color: var(--ink); line-height: 1.8; margin-bottom: 1rem; }
     .about-panel p:last-of-type { margin-bottom: 1.5rem; }
     .about-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
@@ -180,7 +162,6 @@
     .pi-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .pi-link  { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--mid); text-decoration: none; border: 1px solid var(--rule); padding: 0.3rem 0.75rem; border-radius: 3px; transition: all 0.2s; }
     .pi-link:hover { background: var(--light); border-color: var(--mid); }
-
     .team-section-title { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin: 2.5rem 0 1.1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--rule); }
     .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 1rem; }
     .member-card { background: var(--white); border: 1.5px solid var(--rule); border-radius: 8px; padding: 1.5rem 1.25rem; text-align: center; transition: box-shadow 0.2s, transform 0.2s; }
@@ -189,6 +170,8 @@
     .member-card h4   { font-size: 0.95rem; color: var(--navy); margin-bottom: 0.25rem; }
     .member-card .role { font-family: var(--mono); font-size: 0.65rem; color: var(--mid); letter-spacing: 0.06em; text-transform: uppercase; }
     .member-card .member-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.5; }
+    .member-card .linkedin-btn { display: inline-block; margin-top: 0.85rem; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--rule); padding: 0.25rem 0.65rem; border-radius: 3px; text-decoration: none; transition: all 0.2s; }
+    .member-card .linkedin-btn:hover { background: var(--light); border-color: var(--mid); }
 
     /* ── PUBLICATIONS ── */
     .pub-filters { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
@@ -198,6 +181,8 @@
     .pub-item  { padding: 1.75rem 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; align-items: start; }
     .pub-year  { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); font-weight: 500; padding-top: 0.2rem; }
     .pub-title { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; line-height: 1.45; }
+    .pub-title a { color: inherit; text-decoration: none; }
+    .pub-title a:hover { color: var(--mid); text-decoration: underline; }
     .pub-authors { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-bottom: 0.3rem; }
     .pub-journal { font-size: 0.82rem; color: var(--mid); font-family: var(--mono); letter-spacing: 0.02em; }
     .pub-tag   { display: inline-block; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--light); color: var(--mid); padding: 0.15rem 0.5rem; border-radius: 2px; margin-left: 0.5rem; }
@@ -211,17 +196,40 @@
     .news-date   { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
     .news-card h3 { font-size: 1.05rem; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.4; }
     .news-card p  { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .news-card a.news-link { display: inline-block; margin-top: 1rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; transition: all 0.2s; }
+    .news-card a.news-link:hover { color: var(--navy); border-color: var(--navy); }
     .news-category { display: inline-block; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--light); color: var(--mid); padding: 0.2rem 0.55rem; border-radius: 2px; margin-top: 1rem; }
 
-    /* ── FUNDING AGENCIES ── */
-    /* ─────────────────────────────────────────────────────────────────
-       FUNDING LOGOS — HOW TO ADD YOUR LOGOS:
-       1. Download the logo images from each funding agency's website.
-       2. Put them in your "images/" folder (e.g. images/nserc.png).
-       3. For each funder, replace the .funder-ph div with:
-              <img src="images/nserc.png" alt="NSERC" />
-       4. Add or remove .funder-slot blocks as needed.
-    ──────────────────────────────────────────────────────────────────── */
+    /* ── LAB PHOTOS CAROUSEL ── */
+    #lab-photos { padding: 90px 0; background: var(--navy); position: relative; overflow: hidden; }
+    #lab-photos::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
+    .lab-photos-inner { position: relative; z-index: 1; }
+    .lab-photos-inner .section-label { color: var(--accent); }
+    .lab-photos-inner .section-title { color: var(--white); }
+    .lab-photos-inner .section-intro { color: rgba(219,234,254,0.65); }
+    .lp-carousel { position: relative; margin-top: 3rem; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 64px rgba(0,0,0,0.45); }
+    .lp-track { display: flex; transition: transform 0.55s cubic-bezier(0.4,0,0.2,1); }
+    .lp-slide { min-width: 100%; position: relative; }
+    .lp-slide img { width: 100%; height: 520px; object-fit: cover; display: block; }
+    .lp-placeholder { width: 100%; height: 520px; background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6e 60%, #1e4d8c 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: rgba(219,234,254,0.45); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-align: center; border: 2px dashed rgba(59,130,246,0.25); }
+    .lp-placeholder .ph-icon { font-size: 3rem; opacity: 0.35; }
+    .lp-placeholder .ph-sub { font-size: 0.62rem; opacity: 0.4; margin-top: 0.2rem; }
+    .lp-caption-bar { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.5) 70%, transparent 100%); padding: 2.5rem 2rem 1.4rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
+    .lp-caption-text { flex: 1; }
+    .lp-caption-text .lp-date { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+    .lp-caption-text .lp-location { font-size: 1rem; font-family: var(--serif); font-weight: 600; color: var(--white); line-height: 1.3; }
+    .lp-caption-text .lp-desc { font-size: 0.85rem; color: rgba(219,234,254,0.7); margin-top: 0.25rem; font-weight: 300; }
+    .lp-counter { font-family: var(--mono); font-size: 0.75rem; color: rgba(219,234,254,0.5); white-space: nowrap; flex-shrink: 0; padding-bottom: 0.1rem; }
+    .lp-counter span { color: var(--white); font-weight: 500; }
+    .lp-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; color: var(--white); transition: all 0.2s; z-index: 3; }
+    .lp-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-50%) scale(1.07); }
+    .lp-btn.prev { left: 14px; }
+    .lp-btn.next { right: 14px; }
+    .lp-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.5rem; }
+    .lp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(219,234,254,0.25); border: none; cursor: pointer; padding: 0; transition: all 0.25s; }
+    .lp-dot.active { background: var(--accent); transform: scale(1.3); }
+
+    /* ── FUNDING ── */
     #funding { padding: 60px 0 70px; border-top: 1.5px solid var(--rule); }
     .funding-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
     .funding-label::before, .funding-label::after { content: ''; display: block; flex: 1; max-width: 120px; height: 1px; background: var(--rule); }
@@ -229,7 +237,6 @@
     .funder-slot { display: flex; align-items: center; justify-content: center; }
     .funder-slot img { max-height: 68px; max-width: 170px; object-fit: contain; filter: grayscale(15%); opacity: 0.82; transition: all 0.25s; }
     .funder-slot img:hover { opacity: 1; filter: none; }
-    .funder-ph { height: 60px; width: 150px; background: var(--pale); border: 1.5px dashed var(--rule); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.06em; text-align: center; gap: 0.2rem; }
 
     /* ── CODE OF CONDUCT ── */
     .conduct-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
@@ -250,6 +257,9 @@
     .contact-icon    { width: 36px; height: 36px; background: var(--light); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
     .contact-detail-text strong { display: block; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.1rem; }
     .contact-detail-text span   { font-size: 0.95rem; color: var(--ink); }
+    .contact-detail-text a { color: var(--mid); text-decoration: none; }
+    .contact-detail-text a:hover { text-decoration: underline; }
+    .contact-map { margin-top: 1.5rem; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--rule); }
     .join-box { background: var(--pale); border: 1.5px solid var(--rule); border-radius: 10px; padding: 2.5rem; }
     .join-box h3 { font-size: 1.4rem; color: var(--navy); margin-bottom: 0.5rem; }
     .join-box p  { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.7; }
@@ -294,28 +304,17 @@
 ══════════════════════════════════════════════════ -->
 <nav id="nav">
   <div class="nav-inner">
-
-    <!-- TMU LOGO — replace placeholder once you have the logo file -->
     <a href="#hero" class="nav-logo">
-      <!--
-        TO ADD YOUR TMU LOGO:
-        1. Save your TMU logo as "tmu-logo.png" in the same folder as index.html
-        2. Delete the <div class="nav-logo-placeholder"> below
-        3. Uncomment the <img> line below it:
-      -->
-      <img src="TMU_logo.svg.png" alt="TMU" style="height:42px;width:auto;" />
-      <!-- <img src="tmu-logo.png" alt="Toronto Metropolitan University" class="nav-logo-img" /> -->
+      <img src="TMU_logo.svg.png" alt="Toronto Metropolitan University" style="height:42px;width:auto;" />
     </a>
-
     <div class="nav-divider-v"></div>
-
-    <!-- EDIT: Replace with your lab name -->
-<a href="#hero" class="nav-brand">Antonescu <span>Lab</span>
+    <a href="#hero" class="nav-brand">Antonescu <span>Lab</span></a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#research">Research</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#news">News</a></li>
+      <li><a href="#lab-photos">Lab Photos</a></li>
       <li><a href="#conduct">Code of Conduct</a></li>
       <li><a href="#contact">Contact</a></li>
       <li class="nav-ext"><a href="https://www.torontomu.ca/science/" target="_blank" rel="noopener">Faculty of Science ↗</a></li>
@@ -331,34 +330,25 @@
 ══════════════════════════════════════════════════ -->
 <section id="hero">
   <div class="container hero-inner">
-    <!-- EDIT: Replace with your university and department -->
     <div class="hero-kicker">Toronto Metropolitan University · Department of Chemistry &amp; Biology</div>
-    <!-- EDIT: Replace with your lab name -->
-    <h1 class="hero-title">Antonescu<br>Lab
-
-    <!-- EDIT: Replace with PI name -->
-    <p class="hero-dept">Principal Investigator: Dr. Costin Antonescu </p>
-    <!-- EDIT: Replace with your lab's research description -->
+    <h1 class="hero-title">Antonescu<br>Lab</h1>
+    <p class="hero-dept">Principal Investigator: Dr. Costin Antonescu</p>
     <p class="hero-desc">
-     We are a cell biology laboratory interested in fundamental cellular processes 
-      that when disrupted contribute to cancer progression. We study a number of dynamic nanoscale molecular assemblies 
-      such as clathrin structures, receptor complexes , and lipid remodeling structures, which control signaling and 
-      membrane traffic. In turn, these regulate cell proliferation, growth and migration. We are interested in how these 
-      dynamic molecular assemblies are regulated by chemical, mechanical and metabolic cues, and how they can be therapeutically 
-      controlled for cancer treatment and targeted drug delivery.
-
-
+      We are a cell biology laboratory interested in fundamental cellular processes
+      that when disrupted contribute to cancer progression. We study a number of dynamic
+      nanoscale molecular assemblies such as clathrin structures, receptor complexes, and
+      lipid remodeling structures, which control signaling and membrane traffic. In turn,
+      these regulate cell proliferation, growth and migration.
     </p>
     <div class="hero-ctas">
       <a href="#research" class="btn btn-primary">Explore Our Research</a>
       <a href="#contact" class="btn btn-outline">Join the Lab</a>
     </div>
-    <!-- EDIT: Update these numbers to reflect your lab -->
     <div class="hero-stats">
-      <div><div class="stat-num">19</div><div class="stat-label">Lab Members</div></div>
-      <div><div class="stat-num">48</div><div class="stat-label">Publications</div></div>
+      <div><div class="stat-num">21</div><div class="stat-label">Lab Members</div></div>
+      <div><div class="stat-num">54</div><div class="stat-label">Publications</div></div>
       <div><div class="stat-num">6</div><div class="stat-label">Research Themes</div></div>
-      <div><div class="stat-num">2014</div><div class="stat-label">Founded</div></div>
+      <div><div class="stat-num">2011</div><div class="stat-label">Founded</div></div>
     </div>
   </div>
 </section>
@@ -370,51 +360,53 @@
   <div class="container">
     <div class="home-split-grid">
 
-      <!-- LEFT: FEATURED MICROSCOPY IMAGES -->
+      <!-- LEFT: FEATURED MICROSCOPY IMAGES
+           HOW TO ADD YOUR IMAGES:
+           1. Upload image files to your GitHub repo (same folder as index.html).
+           2. For each slide below, replace the micro-placeholder div with:
+              <img src="your-image-filename.jpg" alt="Description"
+                   style="width:100%;height:420px;object-fit:cover;" />
+           3. Update the captions array in the JavaScript at the bottom of this file.
+           4. Add more slides by duplicating a <div class="micro-slide"> block.
+      -->
       <div class="micro-panel">
         <div class="micro-label">Featured Microscopy Images</div>
         <div class="micro-carousel">
           <div class="micro-track" id="micro-track">
 
-            <!-- ══ SLIDE 1 ══════════════════════════════════════
-                 TO ADD YOUR IMAGE: replace the micro-placeholder
-                 div below with:
-                 <img src="images/micro1.jpg"
-                      alt="Brief description of what is shown"
-                      style="width:100%;height:420px;object-fit:cover;" />
-            ══════════════════════════════════════════════════ -->
+            <!-- SLIDE 1 — replace micro-placeholder with your image -->
             <div class="micro-slide">
               <div class="micro-placeholder">
                 <div class="ph-icon">🔬</div>
                 <div>Replace with microscopy image</div>
-                <div class="ph-hint">images/micro1.jpg · recommended: 900×420px</div>
+                <div class="ph-hint">Recommended: 900×420px</div>
               </div>
             </div>
 
-            <!-- ══ SLIDE 2 ══════════════════════════════════════ -->
+            <!-- SLIDE 2 -->
             <div class="micro-slide">
               <div class="micro-placeholder">
                 <div class="ph-icon">🔬</div>
                 <div>Replace with microscopy image</div>
-                <div class="ph-hint">images/micro2.jpg</div>
+                <div class="ph-hint">Recommended: 900×420px</div>
               </div>
             </div>
 
-            <!-- ══ SLIDE 3 ══════════════════════════════════════ -->
+            <!-- SLIDE 3 -->
             <div class="micro-slide">
               <div class="micro-placeholder">
                 <div class="ph-icon">🔬</div>
                 <div>Replace with microscopy image</div>
-                <div class="ph-hint">images/micro3.jpg</div>
+                <div class="ph-hint">Recommended: 900×420px</div>
               </div>
             </div>
 
-            <!-- ══ SLIDE 4 — duplicate this block to add more slides ══ -->
+            <!-- SLIDE 4 — duplicate this block to add more slides -->
             <div class="micro-slide">
               <div class="micro-placeholder">
                 <div class="ph-icon">🔬</div>
                 <div>Replace with microscopy image</div>
-                <div class="ph-hint">images/micro4.jpg</div>
+                <div class="ph-hint">Recommended: 900×420px</div>
               </div>
             </div>
 
@@ -424,8 +416,7 @@
           <div class="micro-dots" id="micro-dots"></div>
         </div>
 
-        <!-- EDIT: Update caption for each slide via JavaScript below,
-             or just change the default text here -->
+        <!-- Update these captions to match your images (one per slide, in order) -->
         <div class="micro-caption" id="micro-caption">
           Replace with a caption describing this image — cell type, technique, scale bar, etc.
         </div>
@@ -434,25 +425,17 @@
       <!-- RIGHT: LAB DESCRIPTION -->
       <div class="about-panel reveal">
         <span class="section-label">About Our Lab</span>
-        <!-- EDIT: Replace heading with your research focus -->
-        <h2>Quantitative Cell Biology at the Nanoscale</h2>
-
-        <!-- EDIT: Replace these paragraphs with your lab description -->
         <p>
-          Welcome to the [Lab Name] at Toronto Metropolitan University. Our research focuses on
-          understanding how cells organize their membranes, communicate through receptors, and
-          regulate organelle function in health and disease.
+          We study a number of dynamic nanoscale molecular assemblies such as clathrin
+          structures, receptor complexes, and lipid remodeling structures, which control
+          signaling and membrane traffic. In turn, these regulate cell proliferation,
+          growth and migration.
         </p>
         <p>
-          We combine advanced fluorescence microscopy, biochemistry, and cell biology to
-          investigate fundamental questions in membrane biology — and to develop new tools
-          and therapeutic strategies.
+          We are interested in how these dynamic molecular assemblies are regulated by
+          chemical, mechanical and metabolic cues, and how they can be therapeutically
+          controlled for cancer treatment and targeted drug delivery.
         </p>
-        <p>
-          We are a diverse, collaborative group committed to rigorous science and the
-          mentorship of trainees at all levels.
-        </p>
-
         <div class="about-ctas">
           <a href="#research" class="btn btn-primary">Our Research</a>
           <a href="#contact" class="btn btn-outline-dark">Join the Lab</a>
@@ -470,59 +453,52 @@
   <div class="container">
     <span class="section-label reveal">Research Areas</span>
     <h2 class="section-title reveal">What We Study</h2>
-    <!-- EDIT: Update the intro paragraph -->
     <p class="section-intro reveal">
-      Our lab investigates membrane biology and cell signaling through six interconnected research themes,
-      combining quantitative microscopy, biochemistry, and chemical biology.
+      Our lab investigates membrane biology and cell signaling through six interconnected
+      research themes, combining quantitative microscopy, biochemistry, and chemical biology.
     </p>
 
     <div class="research-grid reveal">
 
-      <!-- THEME 1 -->
       <a href="research-theme-1.html" class="research-card">
         <div class="research-icon">📡</div>
         <h3>Nanoscale Organization of Receptor Signaling</h3>
-        <p>How are signaling receptors organized at the nanoscale on the cell surface, and how does this spatial organization regulate signal output?</p>
+        <p>How EGFR and PI3K-Akt signaling are spatially organized at the plasma membrane, and how this nanoscale architecture controls breast cancer cell behaviour.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
-      <!-- THEME 2 -->
       <a href="research-theme-2.html" class="research-card">
         <div class="research-icon">⚡</div>
         <h3>Cell Metabolism and Organelle Dynamics</h3>
-        <p>How do metabolic states influence organelle morphology, positioning, and function? We investigate mitochondria, lysosomes, and ER remodeling.</p>
+        <p>How nutrient signals via AMPK and mTORC1 regulate GSK3 localization, early endosome remodeling, and organelle dynamics in breast cancer cells.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
-      <!-- THEME 3 -->
       <a href="research-theme-3.html" class="research-card">
         <div class="research-icon">💊</div>
         <h3>Therapy and Targeted Drug Delivery Development</h3>
-        <p>Leveraging our understanding of membrane trafficking to design targeted drug delivery systems and identify novel therapeutic strategies.</p>
+        <p>Using ultrasound and microbubbles (USMB) to achieve targeted cancer cell killing and selective delivery of chemotherapeutic agents.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
-      <!-- THEME 4 -->
       <a href="research-theme-4.html" class="research-card">
         <div class="research-icon">🔄</div>
         <h3>Clathrin Mediated Endocytosis</h3>
-        <p>Dissecting the molecular machinery that drives clathrin-coated pit nucleation, maturation, and scission at the plasma membrane.</p>
+        <p>Dissecting how metabolic signals, O-GlcNAc modification, and AMPK regulate clathrin-coated pit formation and cargo-selective internalization.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
-      <!-- THEME 5 -->
       <a href="research-theme-5.html" class="research-card">
         <div class="research-icon">🧪</div>
         <h3>Phosphoinositides and Lipid Signalling</h3>
-        <p>How do phosphoinositide lipids orchestrate membrane identity, vesicle trafficking, and signal transduction across cellular compartments?</p>
+        <p>How the acyltransferase LCLAT1 controls the acyl chain profile of phosphoinositide lipids, and the consequences for membrane traffic and cancer cell physiology.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
-      <!-- THEME 6 -->
       <a href="research-theme-6.html" class="research-card">
         <div class="research-icon">🔭</div>
         <h3>Developing New Tools for Microscopy</h3>
-        <p>Engineering fluorescent probes, biosensors, and imaging approaches to push the boundaries of what can be observed in living cells.</p>
+        <p>Engineering silver nanoparticle-based metal-enhanced fluorescence (MEF) approaches to boost fluorescent signal and reduce phototoxicity in cell imaging.</p>
         <div class="card-link-label">Learn more <span class="arr">→</span></div>
       </a>
 
@@ -539,71 +515,173 @@
     <h2 class="section-title reveal">Our Team</h2>
     <p class="section-intro reveal">A diverse group of scientists united by curiosity, rigour, and a commitment to collaborative research.</p>
 
-    <!-- PI — EDIT all fields -->
+    <!-- PI -->
     <div class="team-pi reveal">
-      <div class="avatar">PI</div><!-- Replace "PI" with initials, or swap for <img src="images/pi-photo.jpg"> -->
+      <div class="avatar">CA</div><!-- Replace "CA" with <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"> once you have a headshot -->
       <div class="pi-info">
         <span class="role-tag">Principal Investigator</span>
-        <h3>Dr. Firstname Lastname</h3><!-- EDIT -->
-        <p class="pi-title">Associate Professor, Department of Chemistry &amp; Biology · Toronto Metropolitan University</p><!-- EDIT -->
-        <p>Dr. Lastname received their PhD from [University] in [year] and completed postdoctoral training at [Institution]. Their research focuses on [topic]. They joined TMU in [year].</p><!-- EDIT -->
+        <h3>Dr. Costin Antonescu</h3>
+        <p class="pi-title">Professor and Chair, Department of Chemistry &amp; Biology · Toronto Metropolitan University</p>
+        <p>Dr. Antonescu received his PhD from the University of Toronto in 2008 and completed postdoctoral training at The Scripps Research Institute under the supervision of Dr. Sandra Schmid. He joined Toronto Metropolitan University in 2011. His lab studies dynamic nanoscale molecular assemblies that control cell signaling and membrane traffic, and how disruption of these processes contributes to cancer progression.</p>
         <div class="pi-links">
-          <a href="#" class="pi-link">✉ Email</a>
-          <a href="#" class="pi-link">Google Scholar</a>
-          <a href="#" class="pi-link">Twitter / X</a>
+          <a href="mailto:cantonescu@torontomu.ca" class="pi-link">✉ Email</a>
+          <a href="https://scholar.google.com/citations?hl=en&user=DiUG4ooAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener" class="pi-link">Google Scholar</a>
           <a href="#" class="pi-link">LinkedIn</a>
-          <a href="#" class="pi-link">CV</a>
         </div>
       </div>
     </div>
 
-    <!-- POSTDOCTORAL FELLOW (1) -->
+    <!-- POSTDOCTORAL FELLOW -->
     <div class="team-section-title reveal">Postdoctoral Fellow</div>
     <div class="team-grid reveal">
       <div class="member-card">
-        <div class="member-avatar">PF</div>
-        <h4>Name</h4><!-- EDIT -->
+        <div class="member-avatar">TW</div>
+        <h4>Dr. Tim Walker</h4>
         <span class="role">Postdoctoral Fellow</span>
-        <p class="member-desc">Research interests and current project.</p><!-- EDIT -->
+        <!-- LinkedIn URL: replace # with the full LinkedIn profile URL -->
+        <a href="#" class="linkedin-btn">LinkedIn</a>
       </div>
     </div>
 
-    <!-- PHD STUDENTS (7) -->
+    <!-- PHD STUDENTS -->
     <div class="team-section-title reveal">PhD Students</div>
     <div class="team-grid reveal">
-      <div class="member-card"><div class="member-avatar">S1</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div><!-- EDIT ×7 -->
-      <div class="member-card"><div class="member-avatar">S2</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
-      <div class="member-card"><div class="member-avatar">S3</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
-      <div class="member-card"><div class="member-avatar">S4</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
-      <div class="member-card"><div class="member-avatar">S5</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
-      <div class="member-card"><div class="member-avatar">S6</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
-      <div class="member-card"><div class="member-avatar">S7</div><h4>Name</h4><span class="role">PhD Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card">
+        <div class="member-avatar">JA</div>
+        <h4>John Abousawan</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">DS</div>
+        <h4>Diana Schwendener-Forkel</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">JC</div>
+        <h4>Jayde Casimir Powell</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">EC</div>
+        <h4>Eleanor Cloves</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">OI</div>
+        <h4>Osemudiamen Ibazebo</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">NU</div>
+        <h4>Natalie Uzynski</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">KG</div>
+        <h4>Kseniia Golik</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">CC</div>
+        <h4>Cristina Camardi</h4>
+        <span class="role">PhD Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
     </div>
 
-    <!-- MASTERS STUDENTS (2) -->
+    <!-- MASTER'S STUDENTS -->
     <div class="team-section-title reveal">Master's Students</div>
     <div class="team-grid reveal">
-      <div class="member-card"><div class="member-avatar">M1</div><h4>Name</h4><span class="role">MSc Student</span><p class="member-desc">Research interests.</p></div><!-- EDIT ×2 -->
-      <div class="member-card"><div class="member-avatar">M2</div><h4>Name</h4><span class="role">MSc Student</span><p class="member-desc">Research interests.</p></div>
+      <div class="member-card">
+        <div class="member-avatar">SK</div>
+        <h4>Sahar Kamil</h4>
+        <span class="role">MSc Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">MH</div>
+        <h4>Maryam Hadi</h4>
+        <span class="role">MSc Student</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
     </div>
 
-    <!-- RA / LAB MANAGER (1) -->
+    <!-- RESEARCH ASSOCIATE & LAB MANAGER -->
     <div class="team-section-title reveal">Research Associate &amp; Lab Manager</div>
     <div class="team-grid reveal">
-      <div class="member-card"><div class="member-avatar">RA</div><h4>Name</h4><span class="role">RA / Lab Manager</span><p class="member-desc">Oversees day-to-day lab operations and supports all research projects.</p></div><!-- EDIT -->
+      <div class="member-card">
+        <div class="member-avatar">AM</div>
+        <h4>Ayshin Mehrabi</h4>
+        <span class="role">Research Associate / Lab Manager</span>
+        <p class="member-desc">Organelle-Organelle Interactions under Metabolic Stress</p>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
     </div>
 
-    <!-- UNDERGRADS (8) -->
+    <!-- UNDERGRADUATE RESEARCHERS -->
     <div class="team-section-title reveal">Undergraduate Researchers</div>
     <div class="team-grid reveal">
-      <div class="member-card"><div class="member-avatar">U1</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div><!-- EDIT ×8 -->
-      <div class="member-card"><div class="member-avatar">U2</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U3</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U4</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U5</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U6</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U7</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
-      <div class="member-card"><div class="member-avatar">U8</div><h4>Name</h4><span class="role">Undergraduate</span><p class="member-desc">Project description.</p></div>
+      <div class="member-card">
+        <div class="member-avatar">KM</div>
+        <h4>Katherine Moncada Hernandez</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">LK</div>
+        <h4>Laith Ketranji</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">NC</div>
+        <h4>Nazia Chowdhury</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">SN</div>
+        <h4>Shreya Negah</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">TB</div>
+        <h4>Tamanjot Baraich</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">NM</div>
+        <h4>Nada Mayassi</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">TC</div>
+        <h4>Tiana Clarke</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">ML</div>
+        <h4>Mathumitha Logathas</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">AB</div>
+        <h4>Abhishek Vijay Barot</h4>
+        <span class="role">Undergraduate</span>
+        <a href="#" class="linkedin-btn">LinkedIn</a>
+      </div>
     </div>
 
     <hr class="divider reveal">
@@ -620,41 +698,91 @@
   <div class="container">
     <span class="section-label reveal">Scholarship</span>
     <h2 class="section-title reveal">Selected Publications</h2>
-    <p class="section-intro reveal">A selection of our recent work. For a complete list, see <a href="#" style="color:var(--mid);">Google Scholar</a>.</p><!-- EDIT: add Google Scholar link -->
+    <p class="section-intro reveal">A selection of our recent work. For a complete list, see <a href="https://scholar.google.com/citations?hl=en&user=DiUG4ooAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener" style="color:var(--mid);">Google Scholar</a>.</p>
 
     <div class="pub-filters reveal">
       <button class="pub-filter active" onclick="filterPubs('all',this)">All</button>
-      <button class="pub-filter" onclick="filterPubs('2024',this)">2024</button>
+      <button class="pub-filter" onclick="filterPubs('2025',this)">2025</button>
       <button class="pub-filter" onclick="filterPubs('2023',this)">2023</button>
       <button class="pub-filter" onclick="filterPubs('2022',this)">2022</button>
     </div>
 
-    <!-- EDIT: Replace with your real publications. Duplicate .pub-item blocks to add more. -->
+    <!-- HOW TO ADD A PUBLICATION:
+         1. Duplicate one <div class="pub-item"> block below.
+         2. Update data-year to the correct year (for the filter buttons).
+         3. Fill in pub-title (with a link to the paper), pub-authors, and pub-journal.
+         4. Add a <span class="pub-tag"> for Open Access, Review, etc. if applicable.
+    -->
     <div class="pub-list reveal" id="pub-list">
-      <div class="pub-item" data-year="2024">
-        <div class="pub-year">2024</div>
+
+      <div class="pub-item" data-year="2025">
+        <div class="pub-year">2025</div>
         <div>
-          <div class="pub-title">Paper title here <span class="pub-tag">Open Access</span></div>
-          <div class="pub-authors">Author A, Author B, Lastname PI</div>
-          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+          <div class="pub-title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/40799387/" target="_blank" rel="noopener">
+              Cargo-selective regulation of clathrin-mediated endocytosis by AMP-activated protein kinase
+            </a>
+            <span class="pub-tag">Open Access</span>
+          </div>
+          <div class="pub-authors">Orofiamma LA, Delos Santos RC, Mehrabi A, Leshchyshyn N, Hesketh GG, Rahmani S, Patel A, Fekri F, Ata R, Ratcliffe CDH, Crupi MJF, Mulligan L, Park M, Gingras AC, Antonescu CN</div>
+          <div class="pub-journal">iScience · 2025 Aug;28(8):113131 · doi: 10.1016/j.isci.2025.113131</div>
         </div>
       </div>
+
       <div class="pub-item" data-year="2023">
         <div class="pub-year">2023</div>
         <div>
-          <div class="pub-title">Paper title here <span class="pub-tag">Review</span></div>
-          <div class="pub-authors">Author A, Author B, Lastname PI</div>
-          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+          <div class="pub-title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/37160944/" target="_blank" rel="noopener">
+              Confinement of unliganded EGFR by tetraspanin nanodomains gates EGFR ligand binding and signaling
+            </a>
+            <span class="pub-tag">Open Access</span>
+          </div>
+          <div class="pub-authors">Sugiyama MG, Brown AI, Vega-Lugo J, Borges JP, Scott AM, Jaqaman K, Fairn GD, Antonescu CN</div>
+          <div class="pub-journal">Nature Communications · 2023 May;14(1):2681 · doi: 10.1038/s41467-023-38390-z</div>
         </div>
       </div>
+
+      <div class="pub-item" data-year="2023">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/37737061/" target="_blank" rel="noopener">
+              A tail of their own: regulation of cardiolipin and phosphatidylinositol fatty acyl profile by the acyltransferase LCLAT1
+            </a>
+          </div>
+          <div class="pub-authors">Zhang K, Chan V, Botelho RJ, Antonescu CN</div>
+          <div class="pub-journal">Biochemical Society Transactions · 2023 Oct;51(5):1765–1776 · doi: 10.1042/BST20220603</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-year="2023">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9999237/" target="_blank" rel="noopener">
+              O-GlcNAc transferase modulates the cellular endocytosis machinery by controlling the formation of clathrin-coated pits
+            </a>
+            <span class="pub-tag">Open Access</span>
+          </div>
+          <div class="pub-authors">Rahmani S, Deftu AF, Bhatt DL, Bhatt A, Wakarchuk WW, Antonescu CN</div>
+          <div class="pub-journal">Journal of Biological Chemistry · 2023 Mar;299(3):102941 · doi: 10.1016/j.jbc.2023.102941</div>
+        </div>
+      </div>
+
       <div class="pub-item" data-year="2022">
         <div class="pub-year">2022</div>
         <div>
-          <div class="pub-title">Paper title here</div>
-          <div class="pub-authors">Author A, Lastname PI</div>
-          <div class="pub-journal">Journal Name · Vol. X, pp. 000–000</div>
+          <div class="pub-title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/36089077/" target="_blank" rel="noopener">
+              Control of cell metabolism by the epidermal growth factor receptor
+            </a>
+          </div>
+          <div class="pub-authors">Orofiamma LA, Vural D, Antonescu CN</div>
+          <div class="pub-journal">Biochimica et Biophysica Acta – Molecular Cell Research · 2022 Dec;1869(12):119359 · doi: 10.1016/j.bbamcr.2022.119359</div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -667,61 +795,222 @@
     <span class="section-label reveal">Updates</span>
     <h2 class="section-title reveal">News &amp; Events</h2>
     <p class="section-intro reveal">The latest from the lab — awards, new papers, presentations, and milestones.</p>
-    <!-- EDIT: Replace with your news. Duplicate .news-card blocks to add more. -->
+
+    <!--
+    HOW TO ADD A NEWS ITEM:
+    1. Copy the entire block below from <div class="news-card reveal"> to its closing </div>.
+    2. Paste it at the TOP of the news-grid (newest items first).
+    3. Update: news-date (e.g. "March 2026"), the <h3> title, the <p> description,
+       the news-category tag, and the news-link href and text.
+    4. If there is no link, delete the <a class="news-link"> line entirely.
+    -->
     <div class="news-grid">
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">December 2024</div><h3>Lab Member wins [Award Name]</h3><p>Congratulations to [Name] for receiving [Award] in recognition of their contributions to [field].</p><span class="news-category">Award</span></div></div>
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">November 2024</div><h3>New paper published in [Journal]</h3><p>Our latest work on [topic] is now available. The study reveals [key finding].</p><span class="news-category">Publication</span></div></div>
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">October 2024</div><h3>PI presents at [Conference Name]</h3><p>Dr. Lastname gave an invited talk at [Conference] presenting our recent findings on [topic].</p><span class="news-category">Conference</span></div></div>
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">September 2024</div><h3>Welcome to our new lab members!</h3><p>We are excited to welcome [Names] to the lab this fall.</p><span class="news-category">Lab Life</span></div></div>
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">July 2024</div><h3>Lab receives [Grant] funding</h3><p>We are grateful to [Agency] for supporting our research on [topic].</p><span class="news-category">Funding</span></div></div>
-      <div class="news-card reveal"><div class="news-header"></div><div class="news-body"><div class="news-date">May 2024</div><h3>Congratulations, Dr. [Name]!</h3><p>[Name] successfully defended their doctoral thesis on [topic]. Best wishes in their next position.</p><span class="news-category">Milestone</span></div></div>
+
+      <!-- NEWS CARD 1 — most recent first -->
+      <div class="news-card reveal">
+        <div class="news-header"></div>
+        <div class="news-body">
+          <div class="news-date">February 2026</div>
+          <h3>Lab secures $4.8M CIHR Project Grant</h3>
+          <p>Dr. Antonescu has been awarded a major CIHR Project Grant to support research on spatial control of PI3K-Akt signaling within clathrin signalosomes — part of over $4.8M secured by TMU researchers.</p>
+          <a href="https://www.torontomu.ca/research/news-events/2026/02/tmu-researchers-secure-more-than-4-8-million-in-cihr-project-grant-funding/" target="_blank" rel="noopener" class="news-link">Read more →</a>
+          <span class="news-category">Funding</span>
+        </div>
+      </div>
+
+      <!-- NEWS CARD 2 -->
+      <div class="news-card reveal">
+        <div class="news-header"></div>
+        <div class="news-body">
+          <div class="news-date">2026</div>
+          <h3>CSMB 2026 Poster Prize Winners</h3>
+          <p>Congratulations to Ayshin Mehrabi, Sahar Kamil, and Kseniia Golik, who won poster prizes at the Canadian Society for Molecular Biosciences (CSMB) 2026 meeting on Membrane Proteins in Health and Disease.</p>
+          <span class="news-category">Award</span>
+        </div>
+      </div>
+
+      <!-- NEWS CARD 3 -->
+      <div class="news-card reveal">
+        <div class="news-header"></div>
+        <div class="news-body">
+          <div class="news-date">July 2025</div>
+          <h3>New Paper Published in iScience</h3>
+          <p>Our study on cargo-selective regulation of clathrin-mediated endocytosis by AMPK is now available. The work reveals how nutrient signals reshape the composition of clathrin-coated pits to selectively control cell surface proteins.</p>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/40799387/" target="_blank" rel="noopener" class="news-link">Read the paper →</a>
+          <span class="news-category">Publication</span>
+        </div>
+      </div>
+
+      <!-- NEWS CARD 4 -->
+      <div class="news-card reveal">
+        <div class="news-header"></div>
+        <div class="news-body">
+          <div class="news-date">TMU Decade of Discovery</div>
+          <h3>Lab Featured in TMU Discovery &amp; Innovation Showcase</h3>
+          <p>The Antonescu Lab's work on clathrin's surprising role in controlling cellular responses to growth factors is highlighted in TMU's Decade of Discovery series.</p>
+          <a href="https://decadeofdiscovery.torontomu.ca/discovery-innovation/mechanisms-of-disease" target="_blank" rel="noopener" class="news-link">Read the feature →</a>
+          <span class="news-category">Feature</span>
+        </div>
+      </div>
+
     </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     LAB PHOTOS
+══════════════════════════════════════════════════ -->
+<section id="lab-photos">
+  <div class="container lab-photos-inner">
+    <span class="section-label reveal">The Lab</span>
+    <h2 class="section-title reveal">Lab Life</h2>
+    <p class="section-intro reveal">A glimpse into our lab — conferences, celebrations, and everyday science.</p>
+
+    <!--
+    ════════════════════════════════════════════════════════
+    HOW TO ADD / EDIT LAB PHOTOS:
+
+    Each photo is a <div class="lp-slide"> block.
+    To add a photo:
+      1. Upload the image file to your GitHub repo.
+      2. Duplicate one of the slide blocks below.
+      3. Replace the <div class="lp-placeholder"> with:
+              <img src="your-photo-filename.jpg" alt="Brief description" />
+      4. Update the data-date, data-location, and data-desc attributes
+         on the <div class="lp-slide"> — these fill the caption bar automatically.
+
+    To remove a photo: delete the entire <div class="lp-slide"> block.
+    ════════════════════════════════════════════════════════
+    -->
+
+    <div class="lp-carousel">
+      <div class="lp-track" id="lp-track">
+
+        <!-- PHOTO 1
+             Replace lp-placeholder with: <img src="your-photo.jpg" alt="..." />
+             Update data-date, data-location, data-desc below -->
+        <div class="lp-slide"
+             data-date="Add date (e.g. Fall 2024)"
+             data-location="Add location (e.g. Antonescu Lab, MaRS Centre, Toronto)"
+             data-desc="Add a short description (e.g. Lab retreat and team dinner)">
+          <div class="lp-placeholder">
+            <div class="ph-icon">📸</div>
+            <div>Add your lab photo here</div>
+            <div class="ph-sub">Replace this placeholder · Recommended: 1400×520px</div>
+          </div>
+          <div class="lp-caption-bar">
+            <div class="lp-caption-text">
+              <div class="lp-date"></div>
+              <div class="lp-location"></div>
+              <div class="lp-desc"></div>
+            </div>
+            <div class="lp-counter"><span id="lp-cur">1</span> / <span id="lp-total"></span></div>
+          </div>
+        </div>
+
+        <!-- PHOTO 2 -->
+        <div class="lp-slide"
+             data-date="Add date"
+             data-location="Add location"
+             data-desc="Add description">
+          <div class="lp-placeholder">
+            <div class="ph-icon">📸</div>
+            <div>Add your lab photo here</div>
+            <div class="ph-sub">Replace this placeholder · Recommended: 1400×520px</div>
+          </div>
+          <div class="lp-caption-bar">
+            <div class="lp-caption-text">
+              <div class="lp-date"></div>
+              <div class="lp-location"></div>
+              <div class="lp-desc"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHOTO 3 -->
+        <div class="lp-slide"
+             data-date="Add date"
+             data-location="Add location"
+             data-desc="Add description">
+          <div class="lp-placeholder">
+            <div class="ph-icon">📸</div>
+            <div>Add your lab photo here</div>
+            <div class="ph-sub">Replace this placeholder · Recommended: 1400×520px</div>
+          </div>
+          <div class="lp-caption-bar">
+            <div class="lp-caption-text">
+              <div class="lp-date"></div>
+              <div class="lp-location"></div>
+              <div class="lp-desc"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHOTO 4 — duplicate this block to add more photos -->
+        <div class="lp-slide"
+             data-date="Add date"
+             data-location="Add location"
+             data-desc="Add description">
+          <div class="lp-placeholder">
+            <div class="ph-icon">📸</div>
+            <div>Add your lab photo here</div>
+            <div class="ph-sub">Replace this placeholder · Recommended: 1400×520px</div>
+          </div>
+          <div class="lp-caption-bar">
+            <div class="lp-caption-text">
+              <div class="lp-date"></div>
+              <div class="lp-location"></div>
+              <div class="lp-desc"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /lp-track -->
+
+      <button class="lp-btn prev" id="lp-prev" aria-label="Previous photo">&#8592;</button>
+      <button class="lp-btn next" id="lp-next" aria-label="Next photo">&#8594;</button>
+    </div><!-- /lp-carousel -->
+
+    <div class="lp-dots" id="lp-dots"></div>
+
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════
      FUNDING AGENCIES
 ══════════════════════════════════════════════════ -->
-<section id="funding" class="section--alt">
+<section id="funding-section" class="section--alt">
   <div class="container" style="padding-top:0;padding-bottom:0;">
     <div id="funding">
       <div class="funding-label">Gratefully Funded By</div>
       <div class="funding-logos reveal">
 
-        <!-- FUNDER 1 — replace .funder-ph with <img src="images/nserc.png" alt="NSERC"> -->
         <div class="funder-slot">
-          <div class="funder-ph">
-            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
-            <div>Funder Logo</div>
-            <div style="opacity:0.5;font-size:0.58rem;">images/funder1.png</div>
-          </div>
+          <img src="cihr-logo.webp" alt="Canadian Institutes of Health Research (CIHR)" />
         </div>
 
-        <!-- FUNDER 2 -->
         <div class="funder-slot">
-          <div class="funder-ph">
-            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
-            <div>Funder Logo</div>
-            <div style="opacity:0.5;font-size:0.58rem;">images/funder2.png</div>
-          </div>
+          <img src="Natural_Sciences_and_Engineering_Research_Council_Logo.svg" alt="Natural Sciences and Engineering Research Council of Canada (NSERC)" />
         </div>
 
-        <!-- FUNDER 3 -->
         <div class="funder-slot">
-          <div class="funder-ph">
-            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
-            <div>Funder Logo</div>
-            <div style="opacity:0.5;font-size:0.58rem;">images/funder3.png</div>
-          </div>
+          <img src="Ontario-Logo.png" alt="Province of Ontario" />
         </div>
 
-        <!-- FUNDER 4 — add or remove .funder-slot blocks as needed -->
         <div class="funder-slot">
-          <div class="funder-ph">
-            <div style="font-size:1.1rem;opacity:0.3;">🏛️</div>
-            <div>Funder Logo</div>
-            <div style="opacity:0.5;font-size:0.58rem;">images/funder4.png</div>
-          </div>
+          <img src="innovation-box-logo.webp" alt="Innovations.ca" />
+        </div>
+
+        <div class="funder-slot">
+          <img src="OCE-Square-logo-1.png" alt="Ontario Centres of Excellence" />
+        </div>
+
+        <div class="funder-slot">
+          <img src="TMU_logo.svg.png" alt="Toronto Metropolitan University" />
+        </div>
+
+        <div class="funder-slot">
+          <img src="CFI Canada Foundation of Innovation Logo Black.png" alt="Canada Foundation for Innovation (CFI)" />
         </div>
 
       </div>
@@ -737,7 +1026,7 @@
     <span class="section-label reveal">Our Commitments</span>
     <h2 class="section-title reveal">Code of Conduct</h2>
     <p class="section-intro reveal">We are committed to creating a respectful, inclusive, and scientifically rigorous environment where every member can thrive.</p>
-    <!-- EDIT: Replace descriptions with your actual code of conduct -->
+    <!-- EDIT: Replace the headings and descriptions below with your actual code of conduct text -->
     <div class="conduct-grid">
       <div class="conduct-item reveal"><div class="conduct-num">01</div><div><h4>Respect &amp; Inclusion</h4><p>We treat all members with dignity regardless of background, identity, or experience level. Discrimination, harassment, and exclusion are not tolerated.</p></div></div>
       <div class="conduct-item reveal"><div class="conduct-num">02</div><div><h4>Scientific Integrity</h4><p>We conduct and report research honestly and transparently. Fabrication, falsification, and plagiarism violate our shared values and institutional policy.</p></div></div>
@@ -748,8 +1037,7 @@
     </div>
     <div class="conduct-banner reveal">
       <h3>Questions or Concerns?</h3>
-      <!-- EDIT: Replace with your actual contact/reporting info -->
-      <p>If you have questions about our code of conduct or wish to raise a concern, please reach out to Dr. Lastname directly or contact the TMU Graduate Coordinator. You may also use TMU's formal complaint procedures.</p>
+      <p>If you have questions about our code of conduct or wish to raise a concern, please reach out to Dr. Antonescu directly at <a href="mailto:cantonescu@torontomu.ca" style="color:rgba(219,234,254,0.85);">cantonescu@torontomu.ca</a> or contact the TMU Graduate Coordinator. You may also use TMU's formal complaint procedures.</p>
     </div>
   </div>
 </section>
@@ -762,15 +1050,50 @@
     <span class="section-label reveal">Get in Touch</span>
     <h2 class="section-title reveal">Contact &amp; Join Us</h2>
     <div class="contact-grid">
-      <!-- EDIT: Replace with your real contact information -->
+
       <div class="contact-info reveal">
         <h3>Find Us</h3>
         <p>We are always interested in connecting with motivated researchers at all career stages.</p>
-        <div class="contact-detail"><div class="contact-icon">📍</div><div class="contact-detail-text"><strong>Address</strong><span>Room XXX, Building Name<br>Toronto Metropolitan University<br>Toronto, ON M5B 2K3</span></div></div>
-        <div class="contact-detail"><div class="contact-icon">✉️</div><div class="contact-detail-text"><strong>Email</strong><span>pi.lastname@torontomu.ca</span></div></div>
-        <div class="contact-detail"><div class="contact-icon">🐦</div><div class="contact-detail-text"><strong>Twitter / X</strong><span>@LabHandle</span></div></div>
-        <div class="contact-detail"><div class="contact-icon">🔗</div><div class="contact-detail-text"><strong>GitHub</strong><span>github.com/labhandle</span></div></div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">🏛️</div>
+          <div class="contact-detail-text">
+            <strong>Department Address</strong>
+            <span>Department of Chemistry and Biology<br>Toronto Metropolitan University<br>350 Victoria Street<br>Toronto, ON, Canada M5B 2K3</span>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">🔬</div>
+          <div class="contact-detail-text">
+            <strong>Lab Address</strong>
+            <span>MaRS Discovery District<br>MaRS Centre, West Tower<br>661 University Ave, Suite 1105<br>Toronto, Ontario, Canada M5G 1M1</span>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail-text">
+            <strong>Email</strong>
+            <span><a href="mailto:cantonescu@torontomu.ca">cantonescu@torontomu.ca</a></span>
+          </div>
+        </div>
+
+        <!-- Google Maps embed for 661 University Ave (MaRS Centre) -->
+        <div class="contact-map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2886.5!2d-79.3897!3d43.6599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b34c700000001%3A0x1!2s661+University+Ave%2C+Toronto%2C+ON+M5G+1M1!5e0!3m2!1sen!2sca!4v1"
+            width="100%"
+            height="220"
+            style="border:0;display:block;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="MaRS Discovery District, 661 University Ave, Toronto">
+          </iframe>
+        </div>
       </div>
+
       <div class="join-box reveal">
         <h3>Join Our Lab</h3>
         <p>We welcome applications from curious, collaborative, and driven individuals. Please send a CV, a brief statement of research interests, and the names of two references to the email above.</p>
@@ -781,9 +1104,9 @@
           <li>Undergraduate Research Assistants</li>
           <li>Visiting Researchers &amp; Scholars</li>
         </ul>
-        <!-- EDIT: Replace with your actual email address -->
-        <a href="mailto:pi.lastname@torontomu.ca" class="btn btn-primary">Send an Application</a>
+        <a href="mailto:cantonescu@torontomu.ca" class="btn btn-primary">Send an Application</a>
       </div>
+
     </div>
   </div>
 </section>
@@ -793,14 +1116,14 @@
 ══════════════════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">Antonescu Lab · TMU</div><!-- EDIT -->
+    <div class="footer-brand">Antonescu Lab · TMU</div>
     <ul class="footer-links">
       <li><a href="#research">Research</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <div class="footer-copy">© 2025 Antonescu Lab · Toronto Metropolitan University</div>
+    <div class="footer-copy">© 2026 Antonescu Lab · Toronto Metropolitan University</div>
   </div>
 </footer>
 
@@ -815,12 +1138,12 @@
   });
 
   // ── MICROSCOPY CAROUSEL ──────────────────────────
-  // CAPTIONS: Edit these to match your images (one per slide, in order)
+  // CAPTIONS: Update these to describe your actual images (one per slide, in order)
   const captions = [
-    'Replace with caption for image 1 — cell type, technique, scale bar, etc.',
-    'Replace with caption for image 2.',
-    'Replace with caption for image 3.',
-    'Replace with caption for image 4.',
+    'Replace with a caption for image 1 — cell type, technique, scale bar, etc.',
+    'Replace with a caption for image 2.',
+    'Replace with a caption for image 3.',
+    'Replace with a caption for image 4.',
   ];
 
   const mtrack   = document.getElementById('micro-track');
@@ -857,7 +1180,68 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // ── PUBLICATION FILTER ───────────────────────────
+  // ── LAB PHOTOS CAROUSEL ─────────────────────────
+  (function() {
+    const track   = document.getElementById('lp-track');
+    if (!track) return;
+    const slides  = track.querySelectorAll('.lp-slide');
+    const dotsEl  = document.getElementById('lp-dots');
+    const curEl   = document.getElementById('lp-cur');
+    const totEl   = document.getElementById('lp-total');
+    let cur = 0, timer;
+
+    if (totEl) totEl.textContent = slides.length;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'lp-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+      d.addEventListener('click', () => { goTo(i); reset(); });
+      dotsEl.appendChild(d);
+    });
+
+    // Fill captions from data attributes
+    function fillCaptions(index) {
+      const slide = slides[index];
+      const date     = slide.dataset.date     || '';
+      const location = slide.dataset.location || '';
+      const desc     = slide.dataset.desc     || '';
+      const bar = slide.querySelector('.lp-caption-bar');
+      if (!bar) return;
+      const dateEl = bar.querySelector('.lp-date');
+      const locEl  = bar.querySelector('.lp-location');
+      const descEl = bar.querySelector('.lp-desc');
+      if (dateEl) dateEl.textContent = date;
+      if (locEl)  locEl.textContent  = location;
+      if (descEl) descEl.textContent = desc;
+      // update counter on first slide only (it holds the shared counter elements)
+      if (curEl) curEl.textContent = index + 1;
+    }
+
+    function goTo(n) {
+      cur = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      document.querySelectorAll('.lp-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+      // Update all slide counters
+      slides.forEach((slide, i) => {
+        const curSpan = slide.querySelector('#lp-cur');
+        if (curSpan) curSpan.textContent = cur + 1;
+      });
+      fillCaptions(cur);
+    }
+
+    function reset() { clearInterval(timer); timer = setInterval(() => goTo(cur + 1), 6000); }
+
+    document.getElementById('lp-prev').addEventListener('click', () => { goTo(cur - 1); reset(); });
+    document.getElementById('lp-next').addEventListener('click', () => { goTo(cur + 1); reset(); });
+
+    // Init
+    fillCaptions(0);
+    reset();
+  })();
+
+
   function filterPubs(year, btn) {
     document.querySelectorAll('.pub-filter').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
