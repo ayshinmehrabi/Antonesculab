@@ -112,7 +112,7 @@
     #home-split { padding: 80px 0 70px; background: var(--white); }
     .home-split-grid { display: grid; grid-template-columns: 55fr 45fr; gap: 4rem; align-items: center; }
     .micro-panel { position: relative; }
-    .micro-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .micro-label { font-family: var(--mono); font-size: 0.9rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
     .micro-label::before { content: ''; display: block; width: 18px; height: 1px; background: var(--mid); }
     .micro-carousel { border-radius: 10px; overflow: hidden; box-shadow: 0 12px 48px rgba(10,22,40,0.14); position: relative; }
     .micro-track    { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
@@ -121,7 +121,7 @@
     .micro-placeholder { height: 420px; background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(219,234,254,0.55); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-align: center; gap: 0.6rem; border: 2px dashed rgba(59,130,246,0.3); }
     .micro-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.4; }
     .micro-placeholder .ph-hint { font-size: 0.62rem; opacity: 0.45; margin-top: 0.2rem; }
-    .micro-caption { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 0.75rem; font-style: italic; letter-spacing: 0.03em; min-height: 1.2em; }
+    .micro-caption { font-family: var(--mono); font-size: 0.9rem; color: var(--muted); text-align: center; margin-top: 0.75rem; font-style: italic; letter-spacing: 0.03em; min-height: 1.2em; }
     .micro-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 38px; height: 38px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(10,22,40,0.15); transition: all 0.2s; z-index: 2; color: var(--navy); }
     .micro-btn:hover { background: var(--white); transform: translateY(-50%) scale(1.08); }
     .micro-btn.prev { left: 10px; }
@@ -376,33 +376,66 @@
 
             <!-- SLIDE 1 — replace micro-placeholder with your image -->
             <div class="micro-slide">
-  <img src="actin_vinculin_merge - Laura Orofiamma.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            <img src="actin_vinculin_merge - Laura Orofiamma.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
             </div> 
 
             <!-- SLIDE 2 -->
             <div class="micro-slide">
-              <img src="natalie's micrograph .png" alt="Micrograoh by PhD Candidate Natalie Uzynski"
+              <img src="Natalie-scope.png" alt="Micrograoh by PhD Candidate Natalie Uzynski"
                    style="width:100%;height:420px;object-fit:cover;" />
             </div>
 
             <!-- SLIDE 3 -->
             <div class="micro-slide">
-              <div class="micro-placeholder">
-                <div class="ph-icon">🔬</div>
-                <div>Replace with microscopy image</div>
-                <div class="ph-hint">Recommended: 900×420px</div>
-              </div>
+                <img src="Cristina-scope-vinculin-actin.jpg" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
             </div>
 
             <!-- SLIDE 4 — duplicate this block to add more slides -->
             <div class="micro-slide">
-              <div class="micro-placeholder">
-                <div class="ph-icon">🔬</div>
-                <div>Replace with microscopy image</div>
-                <div class="ph-hint">Recommended: 900×420px</div>
-              </div>
+              <img src="Nada-scope-MDA.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
             </div>
 
+            <!-- SLIDE 5 -->
+            <div class="micro-slide">
+              <img src="Ellie-scope-MDA.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 6 -->
+            <div class="micro-slide">
+              <img src="Nazia-scope.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 7 -->
+            <div class="micro-slide">
+              <img src="Sahar-scope.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 8 -->
+            <div class="micro-slide">
+              <img src="ayshin-scope3.jpg" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 9 -->
+            <div class="micro-slide">
+              <img src="Tim-scope-TIRF.jpg" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 10 -->
+            <div class="micro-slide">
+              <img src="Laith-scope-EE.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 11 -->
+            <div class="micro-slide">
+              <img src="ayshin-scope2.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            <!-- SLIDE 12 -->
+            <div class="micro-slide">
+              <img src="unclipped.png" alt="Description" style="width:100%;height:420px;object-fit:cover;" />
+            </div>
+
+            
           </div><!-- /micro-track -->
           <button class="micro-btn prev" id="micro-prev">&#8592;</button>
           <button class="micro-btn next" id="micro-next">&#8594;</button>
@@ -1201,10 +1234,18 @@
   // ── MICROSCOPY CAROUSEL ──────────────────────────
   // CAPTIONS: Update these to describe your actual images (one per slide, in order)
   const captions = [
-    'Replace with a caption for image 1 — cell type, technique, scale bar, etc.',
-    'Replace with a caption for image 2.',
-    'Replace with a caption for image 3.',
-    'Replace with a caption for image 4.',
+  'By Laura Orofiamma (Green=Vinculin and Magenta=Actin) =',
+  'By Natalie Uzynski',
+  'By Cristina Camardi (Green=Vinculin, Magenta=Actin)',
+  'By Nada Mayassi (MDA-MB-231 cells)',
+  'By Eleanor Cloves (Red=Mitochondria of MDA-MB-231 cells)',
+  'By Nazia Chowdhury',
+  'By Sahar Kamil (Cell Surface EGFR)',
+  'By Ayshin Mehrabi (Red=Tubulin, Yellow=Early Endosomes)',
+  'By Tim Walker using TIRF Microscopy',
+  'By Laith Ketranji (Yellow=Early Endosomes)',
+  'By Ayshin Mehrabi (FIB-SEM 3D Reconstruction of Mitochondria and Endosomes)',
+  'By Ayshin Mehrabi (FIB-SEM 3D Reconstruction of Mitochondria and Endosomes)',
   ];
 
   const mtrack   = document.getElementById('micro-track');
